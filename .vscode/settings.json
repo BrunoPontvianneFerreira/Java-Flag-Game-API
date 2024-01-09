@@ -1,0 +1,5 @@
+{
+    "files.autoSave": "afterDelay",
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.compile.nullAnalysis.mode": "automatic"
+}
