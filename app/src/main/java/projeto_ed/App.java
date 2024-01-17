@@ -3,6 +3,10 @@
  */
 package projeto_ed;
 
+import projeto_ed.Graphs.*;
+
+import java.util.Iterator;
+
 public class App {
     public String getGreeting() {
         return "Hello World!";
@@ -10,5 +14,95 @@ public class App {
 
     public static void main(String[] args) {
         System.out.println(new App().getGreeting());
+
+        Network<String> graph = new Network<>();
+
+        // Adicione vértices
+        graph.addVertex("A");
+        graph.addVertex("B");
+        graph.addVertex("C");
+        graph.addVertex("D");
+        graph.addVertex("E");
+        graph.addVertex("F");
+        graph.addVertex("G");
+        graph.addVertex("H");
+        graph.addVertex("I");
+
+        // Adicione arestas
+        graph.addEdge("A", "B", 1.0);
+        graph.addEdge("A", "C", 2.0);
+        graph.addEdge("A", "D", 1.0);
+        graph.addEdge("A", "E", 4.0);
+        graph.addEdge("B", "F", 2.0);
+        graph.addEdge("F", "H", 1.0);
+        graph.addEdge("D", "G", 7.0);
+        graph.addEdge("G", "I", 8.0);
+        graph.addEdge("H", "I", 1.0);
+        graph.addEdge("B", "A", 1.0);
+        graph.addEdge("C", "A", 2.0);
+        graph.addEdge("D", "A", 1.0);
+        graph.addEdge("E", "A", 4.0);
+        graph.addEdge("F", "B", 2.0);
+        graph.addEdge("H", "F", 1.0);
+        graph.addEdge("G", "D", 7.0);
+        graph.addEdge("I", "G", 8.0);
+        graph.addEdge("I", "H", 1.0);
+        System.out.println(graph.isConnected());
+        double shortestPathWeight = graph.shortestPathWeight("A", "I");
+
+        System.out.println("Shortest path weight from " + "A" + " to " + "I" + ": " + shortestPathWeight);
+        Iterator<String> shortestPath = graph.iteratorShortestPath("A", "I");
+
+        // Imprima o caminho mais curto
+        System.out.println("Caminho mais curto de D para I:");
+
+        while (shortestPath.hasNext()) {
+            System.out.print(shortestPath.next());
+
+            if (shortestPath.hasNext()) {
+                System.out.print(" -> ");
+            }
+        }
+
+        // Imprima o grafo
+        System.out.println("\nGraph:");
+
+        // Execute BFS a partir de um vértice
+        System.out.println("DFS from A:");
+        Iterator<String> bfsIterator = graph.iteratorDFS("A");
+        while (bfsIterator.hasNext()) {
+            System.out.print(bfsIterator.next() + " ");
+        }
+        System.out.println();
+
+        System.out.println("BFS from B:");
+        Iterator<String> bfsIterator2 = graph.iteratorBFS("B");
+        while (bfsIterator2.hasNext()) {
+            System.out.print(bfsIterator2.next() + " ");
+        }
+        System.out.println();
+
+        System.out.println("BFS from C:");
+        Iterator<String> bfsIterator3 = graph.iteratorBFS("C");
+        while (bfsIterator3.hasNext()) {
+            System.out.print(bfsIterator3.next() + " ");
+        }
+        System.out.println();
+
+        // Execute DFS a partir de um vértice
+        System.out.println("DFS from D:");
+        Iterator<String> dfsIterator4 = graph.iteratorBFS("D");
+        while (dfsIterator4.hasNext()) {
+            System.out.print(dfsIterator4.next() + " ");
+        }
+        System.out.println();
+
+        // Remova um vértice
+        graph.removeVertex("B");
+
+        // Imprima o grafo após a remoção
+        System.out.println("Graph after removing vertex B:");
+
+        System.out.println("--------------------------------------------------------------");
     }
 }
