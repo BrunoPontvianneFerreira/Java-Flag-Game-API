@@ -13,9 +13,9 @@ import projeto_ed.Stacks.LinkedStack;
  * @param <T> the type of elements stored in the vertices of the graph
  */
 public class Graph<T> implements GraphADT<T> {
-    protected final int DEFAULT_CAPACITY = 10;
+    protected final int DEFAULT_CAPACITY = 20;
     protected int numVertices; // number of vertices in the graph
-    protected boolean[][] adjMatrix; // adjacency matrix
+    protected double[][] adjMatrix; // adjacency matrix
     protected T[] vertices; // values of vertices
 
     /**
@@ -23,7 +23,7 @@ public class Graph<T> implements GraphADT<T> {
      */
     public Graph() {
         numVertices = 0;
-        this.adjMatrix = new boolean[DEFAULT_CAPACITY][DEFAULT_CAPACITY];
+        this.adjMatrix = new double[DEFAULT_CAPACITY][DEFAULT_CAPACITY];
         this.vertices = (T[]) (new Object[DEFAULT_CAPACITY]);
 
     }
@@ -35,7 +35,7 @@ public class Graph<T> implements GraphADT<T> {
      */
     public Graph(int num) {
         numVertices = 0;
-        this.adjMatrix = new boolean[num][num];
+        this.adjMatrix = new double[num][num];
         this.vertices = (T[]) (new Object[num]);
 
     }
@@ -55,7 +55,7 @@ public class Graph<T> implements GraphADT<T> {
             throw new IllegalArgumentException("Invalid vertex: " + vertex1 + " or " + vertex2);
         }
 
-        adjMatrix[index1][index2] = true;
+        adjMatrix[index1][index2] = 1;
     }
 
     /**
@@ -78,8 +78,8 @@ public class Graph<T> implements GraphADT<T> {
         vertices[numVertices] = vertex;
 
         for (int i = 0; i <= numVertices; i++) {
-            adjMatrix[numVertices][i] = false;
-            adjMatrix[i][numVertices] = false;
+            adjMatrix[numVertices][i] = 0;
+            adjMatrix[i][numVertices] = 0;
         }
 
         numVertices++;
@@ -112,8 +112,8 @@ public class Graph<T> implements GraphADT<T> {
             }
 
             for (int i = 0; i < numVertices; i++) {
-                adjMatrix[i][numVertices - 1] = false;
-                adjMatrix[numVertices - 1][i] = false;
+                adjMatrix[i][numVertices - 1] = 0;
+                adjMatrix[numVertices - 1][i] = 0;
             }
 
             numVertices--;
@@ -137,7 +137,7 @@ public class Graph<T> implements GraphADT<T> {
         }
 
         if (indexIsValid(index1) && indexIsValid(index2)) {
-            adjMatrix[index1][index2] = false;
+            adjMatrix[index1][index2] = 0;
         }
     }
 
@@ -171,7 +171,7 @@ public class Graph<T> implements GraphADT<T> {
             resultList.addToRear(vertices[x]);
 
             for (int i = 0; i < numVertices; i++) {
-                if (adjMatrix[x][i] && !visited[i]) {
+                if (adjMatrix[x][i] > 0 && !visited[i]) {
                     traversalQueue.enqueue(i);
                     visited[i] = true;
                 }
@@ -180,6 +180,8 @@ public class Graph<T> implements GraphADT<T> {
 
         return resultList.iterator();
     }
+
+
 
 
     /**
@@ -213,7 +215,7 @@ public class Graph<T> implements GraphADT<T> {
             boolean found = false;
 
             for (int i = 0; i < numVertices && !found; i++) {
-                if (adjMatrix[x][i] && !visited[i]) {
+                if (adjMatrix[x][i] > 0 && !visited[i]) {
                     traversalStack.push(i);
                     resultList.addToRear(vertices[i]);
                     visited[i] = true;
@@ -228,6 +230,7 @@ public class Graph<T> implements GraphADT<T> {
 
         return resultList.iterator();
     }
+
 
     /**
      * Returns an iterator for the shortest path between two vertices.
@@ -246,40 +249,59 @@ public class Graph<T> implements GraphADT<T> {
             throw new IllegalArgumentException("Invalid start or target vertex");
         }
 
-        LinkedQueue<Integer> traversalQueue = new LinkedQueue<>();
-        DoublyUnorderedLinkedList<T> resultList = new DoublyUnorderedLinkedList<>();
-        boolean[] visited = new boolean[numVertices];
+        double[] distances = new double[numVertices];
+        boolean[] tight = new boolean[numVertices];
         int[] previousVertices = new int[numVertices];
+        boolean[] visited = new boolean[numVertices];
 
         for (int i = 0; i < numVertices; i++) {
-            visited[i] = false;
+            distances[i] = Double.POSITIVE_INFINITY;
+            tight[i] = false;
             previousVertices[i] = -1;
+            visited[i] = false;
         }
 
-        traversalQueue.enqueue(startIndex);
-        visited[startIndex] = true;
+        distances[startIndex] = 0;
 
-        while (!traversalQueue.isEmpty()) {
-            int currentVertex = traversalQueue.dequeue();
+        while (true) {
+            int u = -1;
+            double minDistance = Double.POSITIVE_INFINITY;
 
-            if (currentVertex == targetIndex) {
-                int backtrackVertex = targetIndex;
-                while (backtrackVertex != -1) {
-                    resultList.addToFront(vertices[backtrackVertex]);
-                    backtrackVertex = previousVertices[backtrackVertex];
+            for (int i = 0; i < numVertices; i++) {
+                if (!tight[i] && distances[i] < minDistance) {
+                    u = i;
+                    minDistance = distances[i];
                 }
-
-                return resultList.iterator();
             }
 
-            for (int adjacentVertex = 0; adjacentVertex < numVertices; adjacentVertex++) {
-                if (adjMatrix[currentVertex][adjacentVertex] && !visited[adjacentVertex]) {
-                    traversalQueue.enqueue(adjacentVertex);
-                    visited[adjacentVertex] = true;
-                    previousVertices[adjacentVertex] = currentVertex;
+            if (u == -1) {
+                break;
+            }
+
+            tight[u] = true;
+
+
+            for (int z = 0; z < numVertices; z++) {
+                if (adjMatrix[u][z] > 0 && !visited[z]) {
+                    double newDistance = distances[u] + adjMatrix[u][z];
+
+                    if (newDistance < distances[z]) {
+                        distances[z] = newDistance;
+                        previousVertices[z] = u;
+                    }
                 }
             }
         }
+
+
+        DoublyUnorderedLinkedList<T> resultList = new DoublyUnorderedLinkedList<>();
+        int currentVertex = targetIndex;
+
+        while (currentVertex != -1) {
+            resultList.addToFront(vertices[currentVertex]);
+            currentVertex = previousVertices[currentVertex];
+        }
+
         return resultList.iterator();
     }
 
@@ -314,7 +336,7 @@ public class Graph<T> implements GraphADT<T> {
                 int currentVertex = traversalQueue.dequeue();
 
                 for (int j = 0; j < numVertices; j++) {
-                    if (adjMatrix[currentVertex][j] && !visited[j]) {
+                    if (adjMatrix[currentVertex][j] > 0 && !visited[j]) {
                         traversalQueue.enqueue(j);
                         visited[j] = true;
                     }
@@ -346,7 +368,7 @@ public class Graph<T> implements GraphADT<T> {
      * Expands the capacity of the graph by doubling the size of the adjacency matrix.
      */
     private void expandCapacity() {
-        boolean[][] newMatrix = new boolean[adjMatrix.length * 2][adjMatrix.length * 2];
+        double[][] newMatrix = new double[adjMatrix.length * 2][adjMatrix.length * 2];
         for (int i = 0; i < numVertices; i++) {
             System.arraycopy(adjMatrix[i], 0, newMatrix[i], 0, numVertices);
         }
