@@ -79,7 +79,7 @@ public class Mapa extends Network<Vertice> {
             System.out.print(contador);
 
             // Imprime o estado do vértice (ocupado ou desocupado)
-            if (vertice.isOcuped()) {
+            if (vertice.isOccupied()) {
                 System.out.print("[" + vertice.getBot().getNome() + "]");
             } else if(vertice.isHasFlag1()) {
                 System.out.print("[F1]" + "\t\t");

@@ -9,7 +9,7 @@ public class Vertice {
         bot = null;
     }
 
-    public boolean isOcuped() {
+    public boolean isOccupied() {
         return !(bot == null);
     }
 
