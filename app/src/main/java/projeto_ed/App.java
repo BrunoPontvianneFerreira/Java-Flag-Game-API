@@ -3,19 +3,38 @@
  */
 package projeto_ed;
 
+import projeto_ed.Game.Mapa;
+import projeto_ed.Game.Vertice;
 import projeto_ed.Graphs.*;
 
 import java.util.Iterator;
 
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
 
         Network<String> graph = new Network<>();
+        Mapa mapa = new Mapa(20);
+        for (int i = 1; i <= 20; i++) {
+            Vertice vertice = new Vertice();
+            mapa.addVertex(vertice);
+        }
+
+        mapa.gerarGrafoCompletoAleatorioNaoDirecionado(3);
+        System.out.println(mapa.isConnected());
+
+        // Imprimir o mapa
+        mapa.printMapa();
+        mapa.printArestas();
+
+        Vertice bandeira1 = mapa.getVertice(5);
+        bandeira1.setHasFlag1(true);
+        Vertice bandeira2 = mapa.getVertice(13);
+        bandeira2.setHasFlag2(true);
+
+        mapa.printMapa();
+        mapa.printArestas();
+
 
         // Adicione vértices
         graph.addVertex("A");
@@ -75,15 +94,15 @@ public class App {
         }
         System.out.println();
 
-        System.out.println("BFS from B:");
-        Iterator<String> bfsIterator2 = graph.iteratorBFS("B");
+        System.out.println("BFS from A:");
+        Iterator<String> bfsIterator2 = graph.iteratorBFS("A");
         while (bfsIterator2.hasNext()) {
             System.out.print(bfsIterator2.next() + " ");
         }
         System.out.println();
 
         System.out.println("BFS from C:");
-        Iterator<String> bfsIterator3 = graph.iteratorBFS("C");
+        Iterator<String> bfsIterator3 = graph.iteratorDFS("C");
         while (bfsIterator3.hasNext()) {
             System.out.print(bfsIterator3.next() + " ");
         }
