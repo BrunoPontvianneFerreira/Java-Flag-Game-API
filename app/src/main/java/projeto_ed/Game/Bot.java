@@ -3,6 +3,7 @@ package projeto_ed.Game;
 import java.util.Iterator;
 
 public class Bot<T> {
+    private Vertice vertice;
     private String nome;
     private Iterator<T> iterador;
 
@@ -20,5 +21,13 @@ public class Bot<T> {
 
     public void setIterador(Iterator<T> iterador) {
         this.iterador = iterador;
+    }
+
+    public Vertice getVertice() {
+        return vertice;
+    }
+
+    public void setVertice(Vertice vertice) {
+        this.vertice = vertice;
     }
 }

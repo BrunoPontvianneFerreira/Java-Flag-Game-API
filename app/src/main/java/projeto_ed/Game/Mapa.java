@@ -1,16 +1,36 @@
 package projeto_ed.Game;
 
 import projeto_ed.Graphs.Network;
+import projeto_ed.Lists.DoublyUnorderedLinkedList;
+import projeto_ed.Queues.LinkedQueue;
 
+import java.util.Iterator;
 import java.util.Random;
 
+/**
+ * The Mapa class represents a map with vertices and adjacency matrix.
+ * It allows creating a map with a specified number of vertices.
+ */
 public class Mapa extends Network<Vertice> {
 
+    /**
+     * Constructs a Mapa with the specified number of vertices.
+     *
+     * @param num The number of vertices in the map.
+     */
     public Mapa(int num){
         this.adjMatrix = new double[num][num];
         this.vertices =  new Vertice[num];
+        this.numVertices = 0;
     }
 
+    /**
+     * Retrieves the Vertice object at the specified position in the map.
+     *
+     * @param position The position of the desired Vertice (starting from 1).
+     * @return The Vertice object at the specified position.
+     * @throws IllegalArgumentException If the specified position is invalid.
+     */
     public Vertice getVertice(int position) {
         if (position >= 1 && position <= numVertices) {
             return vertices[position - 1];
@@ -19,51 +39,77 @@ public class Mapa extends Network<Vertice> {
         }
     }
 
+    /**
+     * Generates a random directed complete graph with a specified coverage rate.
+     * The method populates the adjacency matrix with random distances between vertices,
+     * ensuring that the graph remains directed and complete until it is connected.
+     *
+     * @param taxaCobertura The coverage rate indicating the likelihood of creating an edge between vertices (0 to 100).
+     */
     public void gerarGrafoCompletoAleatorioDirecionado(int taxaCobertura) {
-        do{Random random = new Random();
-
-        // Garante que o grafo é completo, então o número de arestas será (N * (N - 1))
+        Random random = new Random();
         int maxArestas = numVertices * (numVertices - 1);
         int numArestas = 0;
 
-        for (int verticeOrigem = 0; verticeOrigem < numVertices; verticeOrigem++) {
-            for (int verticeDestino = 0; verticeDestino < numVertices; verticeDestino++) {
-                if (verticeOrigem != verticeDestino && numArestas < maxArestas && random.nextInt(100) < taxaCobertura) {
-                    // Adiciona uma aresta entre os vértices se o valor aleatório estiver abaixo da taxa de cobertura
-                    int distance = gerarDistanciaAleatoria();
-                    adjMatrix[verticeOrigem][verticeDestino] = distance;
-                    numArestas++;
+        do {
+            resetGraph();
+
+            for (int verticeOrigem = 0; verticeOrigem < numVertices; verticeOrigem++) {
+                for (int verticeDestino = 0; verticeDestino < numVertices; verticeDestino++) {
+                    if (verticeOrigem != verticeDestino && numArestas < maxArestas && random.nextInt(100) < taxaCobertura) {
+                        int distance = gerarDistanciaAleatoria();
+                        adjMatrix[verticeOrigem][verticeDestino] = distance;
+                        numArestas++;
+                    }
                 }
             }
-        }
-    }while(!isConnected());
+        } while (!isConnected());
     }
 
+    /**
+     * Generates a random undirected complete graph with a specified coverage rate.
+     * The method populates the adjacency matrix with random distances between vertices,
+     * ensuring that the graph remains undirected and complete until it is connected.
+     *
+     * @param taxaCobertura The coverage rate indicating the likelihood of creating an edge between vertices (0 to 100).
+     */
     public void gerarGrafoCompletoAleatorioNaoDirecionado(int taxaCobertura) {
-        do {
-            Random random = new Random();
+        Random random = new Random();
 
-            // Garante que o grafo é completo, então o número de arestas será (N * (N - 1)) / 2
+        do {
+            resetGraph();
+
             int maxArestas = (numVertices * (numVertices - 1)) / 2;
             int numArestas = 0;
 
             for (int verticeOrigem = 0; verticeOrigem < numVertices - 1; verticeOrigem++) {
                 for (int verticeDestino = verticeOrigem + 1; verticeDestino < numVertices; verticeDestino++) {
                     if (numArestas < maxArestas && random.nextInt(100) < taxaCobertura) {
-                        // Adiciona uma aresta entre os vértices se o valor aleatório estiver abaixo da taxa de cobertura
                         int distance = gerarDistanciaAleatoria();
                         adjMatrix[verticeOrigem][verticeDestino] = distance;
-                        adjMatrix[verticeDestino][verticeOrigem] = distance; // Para grafo não direcionado
+                        adjMatrix[verticeDestino][verticeOrigem] = distance;
                         numArestas++;
                     }
                 }
             }
-        }while(!isConnected());
+        } while (!isConnected());
+    }
+
+    /**
+     * Resets the graph by initializing the adjacency matrix with zero distances.
+     * All edges in the graph are removed after calling this method.
+     */
+    private void resetGraph() {
+        for (int i = 0; i < numVertices; i++) {
+            for(int j=0; j<numVertices; j++){
+                adjMatrix[i][j] = 0;
+            }
+        }
     }
 
     private int gerarDistanciaAleatoria() {
         Random random = new Random();
-        return (int)(1 + random.nextDouble() * 14); // Números aleatórios entre 1 e 15
+        return (int)(1 + random.nextDouble() * 14);
     }
 
     public void printMapa() {
@@ -75,7 +121,7 @@ public class Mapa extends Network<Vertice> {
         for (int i = 0; i < numVertices; i++) {
             Vertice vertice = vertices[i];
 
-            // Imprime o número do vértice
+
             System.out.print(contador);
 
             // Imprime o estado do vértice (ocupado ou desocupado)
@@ -110,6 +156,52 @@ public class Mapa extends Network<Vertice> {
             }
         }
     }
+
+    public Iterator<Vertice> weightedShortestPathIterator(Vertice startVertex, Vertice targetVertex) {
+        int startIndex = getIndex(startVertex);
+        int targetIndex = getIndex(targetVertex);
+
+        if (!indexIsValid(startIndex) || !indexIsValid(targetIndex)) {
+            throw new IllegalArgumentException("Invalid start or target vertex");
+        }
+
+        LinkedQueue<Integer> traversalQueue = new LinkedQueue<>();
+        DoublyUnorderedLinkedList<Vertice> resultList = new DoublyUnorderedLinkedList<>();
+        boolean[] visited = new boolean[numVertices];
+        int[] previousVertices = new int[numVertices];
+
+        for (int i = 0; i < numVertices; i++) {
+            visited[i] = false;
+            previousVertices[i] = -1;
+        }
+
+        traversalQueue.enqueue(startIndex);
+        visited[startIndex] = true;
+
+        while (!traversalQueue.isEmpty()) {
+            int currentVertex = traversalQueue.dequeue();
+
+            if (currentVertex == targetIndex) {
+                int backtrackVertex = targetIndex;
+                while (backtrackVertex != -1) {
+                    resultList.addToFront(vertices[backtrackVertex]);
+                    backtrackVertex = previousVertices[backtrackVertex];
+                }
+
+                return resultList.iterator();
+            }
+
+            for (int adjacentVertex = 0; adjacentVertex < numVertices; adjacentVertex++) {
+                if (adjMatrix[currentVertex][adjacentVertex] > 0 && !visited[adjacentVertex]) {
+                    traversalQueue.enqueue(adjacentVertex);
+                    visited[adjacentVertex] = true;
+                    previousVertices[adjacentVertex] = currentVertex;
+                }
+            }
+        }
+        return resultList.iterator();
+    }
+
 
 
 }

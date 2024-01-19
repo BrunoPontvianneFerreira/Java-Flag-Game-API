@@ -14,13 +14,13 @@ public class App {
     public static void main(String[] args) {
 
         Network<String> graph = new Network<>();
-        Mapa mapa = new Mapa(20);
-        for (int i = 1; i <= 20; i++) {
+        Mapa mapa = new Mapa(200);
+        for (int i = 1; i <= 200; i++) {
             Vertice vertice = new Vertice();
             mapa.addVertex(vertice);
         }
 
-        mapa.gerarGrafoCompletoAleatorioNaoDirecionado(3);
+        mapa.gerarGrafoCompletoAleatorioDirecionado(5);
         System.out.println(mapa.isConnected());
 
         // Imprimir o mapa
@@ -35,6 +35,35 @@ public class App {
         mapa.printMapa();
         mapa.printArestas();
 
+        double custo = mapa.shortestPathWeight(bandeira1, bandeira2);
+
+        System.out.println("Shortest path weight from " + "bandeira 1" + " to " + "bandeira 2" + ": " + custo);
+        Iterator<Vertice> shortestPath = mapa.iteratorShortestPath(bandeira1, bandeira2);
+
+        // Imprima o caminho mais curto
+        System.out.println("Caminho mais curto de bandeira 1 para bandeira 2:");
+
+        while (shortestPath.hasNext()) {
+            System.out.print(shortestPath.next().getNum());
+
+            if (shortestPath.hasNext()) {
+                System.out.print(" -> ");
+            }
+        }
+
+        Iterator<Vertice> shortestPathArestas = mapa.weightedShortestPathIterator(bandeira1, bandeira2);
+
+        // Imprima o caminho mais curto
+        System.out.println("\nCaminho mais curto de bandeira 1 para bandeira 2 por arestas:");
+
+        while (shortestPathArestas.hasNext()) {
+            System.out.print(shortestPathArestas.next().getNum());
+
+            if (shortestPathArestas.hasNext()) {
+                System.out.print(" -> ");
+            }
+        }
+
 
         // Adicione vértices
         graph.addVertex("A");
@@ -46,6 +75,8 @@ public class App {
         graph.addVertex("G");
         graph.addVertex("H");
         graph.addVertex("I");
+        graph.addVertex("J");
+
 
         // Adicione arestas
         graph.addEdge("A", "B", 1.0);
@@ -66,19 +97,25 @@ public class App {
         graph.addEdge("G", "D", 7.0);
         graph.addEdge("I", "G", 8.0);
         graph.addEdge("I", "H", 1.0);
+        graph.addEdge("G", "J", 4.0);
+        graph.addEdge("J", "G", 4.0);
+        graph.addEdge("E", "J", 5.0);
+        graph.addEdge("J", "E", 5.0);
+        graph.addEdge("I", "J", 1.0);
+        graph.addEdge("J", "I", 1.0);
         System.out.println(graph.isConnected());
-        double shortestPathWeight = graph.shortestPathWeight("A", "I");
+        double shortestPathWeight = graph.shortestPathWeight("A", "J");
 
         System.out.println("Shortest path weight from " + "A" + " to " + "I" + ": " + shortestPathWeight);
-        Iterator<String> shortestPath = graph.iteratorShortestPath("A", "I");
+        Iterator<String> shortestPath2 = graph.iteratorShortestPath("A", "J");
 
         // Imprima o caminho mais curto
         System.out.println("Caminho mais curto de D para I:");
 
-        while (shortestPath.hasNext()) {
-            System.out.print(shortestPath.next());
+        while (shortestPath2.hasNext()) {
+            System.out.print(shortestPath2.next());
 
-            if (shortestPath.hasNext()) {
+            if (shortestPath2.hasNext()) {
                 System.out.print(" -> ");
             }
         }

@@ -12,6 +12,12 @@ import projeto_ed.Queues.LinkedQueue;
  * @param <T> the type of elements stored in the vertices of the network
  */
 public class Network<T> extends Graph<T> implements NetworkADT<T> {
+    public Network(int size) {
+        super(size);
+    }
+
+    public Network() {
+    }
 
     /**
      * Inserts an edge with weight between two vertices of the network.
@@ -39,57 +45,24 @@ public class Network<T> extends Graph<T> implements NetworkADT<T> {
      */
 
     @Override
-    public double shortestPathWeight(T vertex1, T vertex2) {
-        int startIndex = getIndex(vertex1);
-        int targetIndex = getIndex(vertex2);
+    public double shortestPathWeight(T vertex1, T vertex2) throws IllegalArgumentException {
+        double weight = 0;
 
-        if (!indexIsValid(startIndex) || !indexIsValid(targetIndex)) {
-            throw new IllegalArgumentException("Invalid start or target vertex");
+        if (!contains(vertex1) || !contains(vertex2)) {
+            throw new IllegalArgumentException();
         }
 
-        double[] distances = new double[numVertices];
-        boolean[] tight = new boolean[numVertices];
-        int[] previousVertices = new int[numVertices];
-        boolean[] visited = new boolean[numVertices];
+        int currentVertex = getIndex(vertex1);
 
-        for (int i = 0; i < numVertices; i++) {
-            distances[i] = Double.POSITIVE_INFINITY;
-            tight[i] = false;
-            previousVertices[i] = -1;
-            visited[i] = false;
-        }
+        for (Iterator<T> it = super.iteratorShortestPath(vertex1, vertex2); it.hasNext(); ) {
+            T element = it.next();
+            int index = getIndex(element);
 
-        distances[startIndex] = 0;
-
-        while (true) {
-            int u = -1;
-            double minDistance = Double.POSITIVE_INFINITY;
-
-            for (int i = 0; i < numVertices; i++) {
-                if (!tight[i] && distances[i] < minDistance) {
-                    u = i;
-                    minDistance = distances[i];
-                }
-            }
-
-            if (u == -1) {
-                break;
-            }
-
-            tight[u] = true;
-
-            for (int z = 0; z < numVertices; z++) {
-                if (adjMatrix[u][z] > 0 && !visited[z]) {
-                    double newDistance = distances[u] + adjMatrix[u][z];
-
-                    if (newDistance < distances[z]) {
-                        distances[z] = newDistance;
-                        previousVertices[z] = u;
-                    }
-                }
+            if (adjMatrix[currentVertex][index] != Integer.MAX_VALUE) {
+                weight += adjMatrix[currentVertex][index];
+                currentVertex = index;
             }
         }
-
-        return distances[targetIndex];
+        return weight;
     }
 }

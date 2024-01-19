@@ -1,12 +1,18 @@
 package projeto_ed.Game;
 
 public class Vertice {
+
+    static private int cont = 1;
     private Bot bot;
     private boolean hasFlag1;
     private boolean hasFlag2;
+    private int num;
 
     public Vertice() {
         bot = null;
+        num = cont;
+        cont += 1;
+
     }
 
     public boolean isOcuped() {
@@ -35,5 +41,10 @@ public class Vertice {
 
     public void setHasFlag2(boolean hasFlag2) {
         this.hasFlag2 = hasFlag2;
+    }
+
+
+    public int getNum() {
+        return num;
     }
 }

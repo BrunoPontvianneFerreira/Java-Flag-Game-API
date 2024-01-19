@@ -1,5 +1,7 @@
 package projeto_ed.Heaps;
 
+import java.util.Iterator;
+
 /**
  * PriorityQueue demonstrates a priority queue using a Heap.
  *
@@ -33,5 +35,14 @@ public class PriorityQueue<T> extends ArrayHeap<PriorityQueueNode<T>> {
     public T removeNext() {
         PriorityQueueNode<T> temp = (PriorityQueueNode<T>) super.removeMin();
         return temp.getElement();
+    }
+
+    public void changePriority(T element, int newPriority) {
+        for (Iterator<PriorityQueueNode<T>> it = super.iteratorInOrder(); it.hasNext(); ) {
+            PriorityQueueNode<T> priorityQueueNode = it.next();
+            if (priorityQueueNode.getElement().equals(element)) {
+                priorityQueueNode.setPriority(newPriority);
+            }
+        }
     }
 }
