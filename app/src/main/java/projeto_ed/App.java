@@ -14,8 +14,8 @@ public class App {
     public static void main(String[] args) {
 
         Network<String> graph = new Network<>();
-        Mapa mapa = new Mapa(200);
-        for (int i = 1; i <= 200; i++) {
+        Mapa mapa = new Mapa(50);
+        for (int i = 1; i <= 50; i++) {
             Vertice vertice = new Vertice();
             mapa.addVertex(vertice);
         }
