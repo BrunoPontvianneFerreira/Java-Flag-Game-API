@@ -5,14 +5,19 @@ package projeto_ed;
 
 import projeto_ed.Game.*;
 import projeto_ed.Graphs.*;
+import projeto_ed.MapsManagement.*;
 
 import java.util.Iterator;
+import java.util.Scanner;
 
 public class App {
 
     public static void main(String[] args) {
 
+        Scanner scanner = new Scanner(System.in);
         Network<String> graph = new Network<>();
+        MapExporter exporter = new MapExporter();
+        MapImporter importer = new MapImporter();
         Mapa mapa = new Mapa(15);
         for (int i = 1; i <= 15; i++) {
             Vertice vertice = new Vertice();
@@ -161,5 +166,12 @@ public class App {
         System.out.println("Graph after removing vertex B:");
 
         System.out.println("--------------------------------------------------------------");
+
+
+        System.out.println("Introduza onde guardar o mapa");
+        String pathWrite = scanner.nextLine();
+        exporter.saveMapToFile(mapa, pathWrite);
+
+
     }
 }
