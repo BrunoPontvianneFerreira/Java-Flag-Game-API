@@ -3,8 +3,7 @@
  */
 package projeto_ed;
 
-import projeto_ed.Game.Mapa;
-import projeto_ed.Game.Vertice;
+import projeto_ed.Game.*;
 import projeto_ed.Graphs.*;
 
 import java.util.Iterator;
@@ -14,23 +13,25 @@ public class App {
     public static void main(String[] args) {
 
         Network<String> graph = new Network<>();
-        Mapa mapa = new Mapa(50);
-        for (int i = 1; i <= 50; i++) {
+        Mapa mapa = new Mapa(15);
+        for (int i = 1; i <= 15; i++) {
             Vertice vertice = new Vertice();
             mapa.addVertex(vertice);
         }
 
-        mapa.gerarGrafoCompletoAleatorioDirecionado(5);
+        mapa.gerarGrafoCompletoAleatorioDirecionado(20);
         System.out.println(mapa.isConnected());
 
         // Imprimir o mapa
         mapa.printMapa();
         mapa.printArestas();
 
+
         Vertice bandeira1 = mapa.getVertice(5);
         bandeira1.setHasFlag1(true);
         Vertice bandeira2 = mapa.getVertice(13);
-        bandeira2.setHasFlag2(true);
+        bandeira1.setHasFlag2(false);
+        BotShortestPath bot = new BotShortestPath("B1", Equipa.EQUIPA1);
 
         mapa.printMapa();
         mapa.printArestas();
@@ -44,7 +45,7 @@ public class App {
         System.out.println("Caminho mais curto de bandeira 1 para bandeira 2:");
 
         while (shortestPath.hasNext()) {
-            System.out.print(shortestPath.next().getNum());
+            System.out.print(shortestPath.next().getindex());
 
             if (shortestPath.hasNext()) {
                 System.out.print(" -> ");
@@ -57,7 +58,7 @@ public class App {
         System.out.println("\nCaminho mais curto de bandeira 1 para bandeira 2 por arestas:");
 
         while (shortestPathArestas.hasNext()) {
-            System.out.print(shortestPathArestas.next().getNum());
+            System.out.print(shortestPathArestas.next().getindex());
 
             if (shortestPathArestas.hasNext()) {
                 System.out.print(" -> ");
