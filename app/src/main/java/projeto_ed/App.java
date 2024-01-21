@@ -20,7 +20,7 @@ public class App {
             mapa.addVertex(vertice);
         }
 
-        mapa.gerarGrafoCompletoAleatorioDirecionado(10);
+        mapa.gerarGrafoCompletoAleatorioDirecionado(30);
         System.out.println(mapa.isConnected());
 
         // Imprimir o mapa
