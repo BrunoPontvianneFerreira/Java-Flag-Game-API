@@ -91,21 +91,31 @@ public class ArrayHeap<T> extends ArrayBinaryTree<T> implements HeapADT<T> {
         while ((next < count) && (((Comparable) tree[next]).compareTo(temp) < 0)) {
             tree[node] = tree[next];
             node = next;
-            left = 2 * node + 1;
-            right = 2 * (node + 1);
-            if ((tree[left] == null) && (tree[right] == null))
-                next = count;
-            else if (tree[left] == null)
-                next = right;
-            else if (tree[right] == null)
-                next = left;
-            else if (((Comparable) tree[left]).compareTo(tree[right]) < 0)
-                next = left;
-            else
-                next = right;
+            boolean valid;
+            do {
+                try {
+                    left = 2 * node + 1;
+                    right = 2 * (node + 1);
+                    if ((tree[left] == null) && (tree[right] == null))
+                        next = count;
+                    else if (tree[left] == null)
+                        next = right;
+                    else if (tree[right] == null)
+                        next = left;
+                    else if (((Comparable) tree[left]).compareTo(tree[right]) < 0)
+                        next = left;
+                    else
+                        next = right;
+                    valid = true;
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    expandCapacity();
+                    valid = false;
+                }
+            } while (!valid);
         }
         tree[node] = temp;
     }
+
 
     /**
      * Returns the element with the minimum value in the heap.

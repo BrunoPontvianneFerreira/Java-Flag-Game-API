@@ -5,10 +5,9 @@ import projeto_ed.Queues.LinkedQueue;
 import java.util.Iterator;
 
 public class BotShortestEdge extends Bot implements IBot{
-    private LinkedQueue<Vertice> targetQueue;
     public BotShortestEdge(String botName, Equipa equipa) {
         super(botName, equipa);
-        targetQueue = new LinkedQueue<>();
+        this.setRota(new LinkedQueue<>());
     }
 
     @Override
@@ -29,7 +28,7 @@ public class BotShortestEdge extends Bot implements IBot{
         if (getRota() == null) {
             createRout(map, map.getVertice(this.getVertice_index()), map.getVertice(this.getFlag_index()));
         }
-        Vertice vertice =  getRota().first();
+        Vertice vertice = getRota().first();
         if(!vertice.isOcuped()){
             this.setLast_vertice_index(this.getVertice_index());
             map.getVertice(this.getVertice_index()).setBot(null);
@@ -42,7 +41,7 @@ public class BotShortestEdge extends Bot implements IBot{
 
             if (nextVertex != null) {
                 this.setLast_vertice_index(this.getVertice_index());
-                createRout(map, currentVertex, map.getVertice(this.getFlag_index()));
+                createRout(map, nextVertex, map.getVertice(this.getFlag_index()));
                 map.getVertice(this.getVertice_index()).setBot(null);
                 nextVertex.setBot(this);
                 this.setVertice_index(nextVertex.getindex());
@@ -51,22 +50,12 @@ public class BotShortestEdge extends Bot implements IBot{
     }
 
     private Vertice findNextAvailableVertex(Mapa map, Vertice currentVertex) {
-        int index = -1;
         double[][] matriz = map.getAdjMatrix();
         for (int i = 0; i < map.size(); i++) {
-            if (matriz[currentVertex.getindex()][i] > 0 && i != this.getLast_vertice_index() && !map.getVertice(i).isOcuped()) {
-                return map.getVertice(index);
+            if (matriz[currentVertex.getindex() - 1][i] > 0 && (i != this.getLast_vertice_index()-1) && !map.getVertice(i+1).isOcuped()) {
+                return map.getVertice(i + 1);
             }
         }
         return null;
-    }
-
-
-    public LinkedQueue<Vertice> getRota() {
-        return targetQueue;
-    }
-
-    public void setRota(LinkedQueue<Vertice> rota) {
-        this.targetQueue = rota;
     }
 }
