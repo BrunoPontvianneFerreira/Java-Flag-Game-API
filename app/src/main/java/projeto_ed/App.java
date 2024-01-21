@@ -7,15 +7,34 @@ import projeto_ed.Game.*;
 import projeto_ed.Graphs.*;
 import projeto_ed.MapsManagement.*;
 
+import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.Scanner;
 
 public class App {
 
+
+    public static int readIntWithLimit(Scanner read, int min, int max) {
+        boolean valid = false;
+        int option = 0;
+        while (!valid) {
+            try {
+                option = read.nextInt();
+            } catch (InputMismatchException e) {
+                read.nextLine();
+                continue;
+            }
+            if (option >= min && option <= max) {
+                valid = true;
+            }
+            read.nextLine();
+        }
+        return option;
+    }
+
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
-        Network<String> graph = new Network<>();
         MapExporter exporter = new MapExporter();
         MapImporter importer = new MapImporter();
         Mapa mapa = new Mapa(15);
@@ -23,162 +42,133 @@ public class App {
             Vertice vertice = new Vertice();
             mapa.addVertex(vertice);
         }
+        int escolha;
 
-        mapa.gerarGrafoCompletoAleatorioDirecionado(30);
-        System.out.println(mapa.isConnected());
+        do {
+            System.out.println("====Menu====");
+            System.out.println("1 - Play a match");
+            System.out.println("2 - Map Creator menu");
+            System.out.println("3 - Exit");
+            escolha = readIntWithLimit(scanner, 1, 3);
+            Mapa mapToUse;
+            Mapa mapToCreate;
+            switch (escolha) {
+                case 1:
+                    System.out.println("====Let´s begin====");
+                    System.out.println("Do you wish to:");
+                       System.out.println("1 - Import a map");
+                       System.out.println("2 - Create one");
+                       int mapAnswer = readIntWithLimit(scanner,1,2);
+                       switch (mapAnswer){
+                           case 1:
+                               System.out.println("Introduce the path for the map you want to import:");
+                               String pathMap = scanner.nextLine();
+                               mapToUse = importer.loadMapFromFile(pathMap);
+                               break;
+                           case 2:
+                               System.out.println("How many positions do you want your map to have, minimum 10 and maximum 100:");
+                               int mapSizeToUse = readIntWithLimit(scanner,10,100);
+                               mapToUse = new Mapa(mapSizeToUse);
+                               mapToUse.generateVertexs(mapSizeToUse);
+                               System.out.println("Do you want your map to be:");
+                               System.out.println("1 - Directional");
+                               System.out.println("2 - Non directional");
+                               int mapTypeToUse = readIntWithLimit(scanner,1,2);
+                               int coverageToUse;
+                               switch (mapTypeToUse){
+                                   case 1:
+                                       System.out.println("Introduce the coverage you want to have on this map, you need a minimum of 30% coverage in this case:");
+                                       coverageToUse = readIntWithLimit(scanner,30,100);
+                                       mapToUse.gerarGrafoCompletoAleatorioDirecionado(coverageToUse);
+                                       break;
+                                   case 2:
+                                       System.out.println("Introduce the coverage you want to have on this map, you need a minimum of 20% coverage in this case:");
+                                       coverageToUse = readIntWithLimit(scanner,20,100);
+                                       mapToUse.gerarGrafoCompletoAleatorioNaoDirecionado(coverageToUse);
+                                       break;
+                               }
+                               System.out.println("This is the map you generated:");
+                               mapToUse.printMapa();
+                               System.out.println();
+                               System.out.println("This are the map edges:");
+                               mapToUse.printArestas();
+                               System.out.println();
+                               break;
+                       }
 
-        // Imprimir o mapa
-        mapa.printMapa();
-        mapa.printArestas();
 
-
-        Vertice bandeira1 = mapa.getVertice(5);
-        bandeira1.setHasFlag1(true);
-        Vertice bandeira2 = mapa.getVertice(13);
-        bandeira1.setHasFlag2(false);
-        BotShortestPath bot = new BotShortestPath("B1", Equipa.EQUIPA1);
-
-        mapa.printMapa();
-        mapa.printArestas();
-
-        double custo = mapa.shortestPathWeight(bandeira1, bandeira2);
-
-        System.out.println("Shortest path weight from " + "bandeira 1" + " to " + "bandeira 2" + ": " + custo);
-        Iterator<Vertice> shortestPath = mapa.iteratorShortestPath(bandeira1, bandeira2);
-
-        // Imprima o caminho mais curto
-        System.out.println("Caminho mais curto de bandeira 1 para bandeira 2:");
-
-        while (shortestPath.hasNext()) {
-            System.out.print(shortestPath.next().getindex());
-
-            if (shortestPath.hasNext()) {
-                System.out.print(" -> ");
+                    break;
+                case 2:
+                    System.out.println("====Map Creation Menu====");
+                    System.out.println("Welcome to the map creation menu." +
+                            "\nAfter you have created your map we will ask you the path where you want to store the created map." +
+                            "\nKeep in mind that if you choose to not save the map you will lose it.");
+                    System.out.println("Let´s create the perfect map");
+                    System.out.println("How many positions do you want your map to have, minimum 10 and maximum 100:");
+                    int mapSize = readIntWithLimit(scanner,10,100);
+                    mapToCreate = new Mapa(mapSize);
+                    mapToCreate.generateVertexs(mapSize);
+                    System.out.println("Do you want your map to be:");
+                    System.out.println("1 - Directional");
+                    System.out.println("2 - Non directional");
+                    int mapType = readIntWithLimit(scanner,1,2);
+                    int coverage;
+                    switch (mapType){
+                        case 1:
+                            System.out.println("Introduce the coverage you want to have on this map, you need a minimum of 30% coverage in this case:");
+                            coverage = readIntWithLimit(scanner,30,100);
+                            mapToCreate.gerarGrafoCompletoAleatorioDirecionado(coverage);
+                            break;
+                        case 2:
+                            System.out.println("Introduce the coverage you want to have on this map, you need a minimum of 20% coverage in this case:");
+                            coverage = readIntWithLimit(scanner,20,100);
+                            mapToCreate.gerarGrafoCompletoAleatorioNaoDirecionado(coverage);
+                            break;
+                    }
+                    System.out.println("This is the map you generated:");
+                    mapToCreate.printMapa();
+                    System.out.println();
+                    System.out.println("These are the map edges:");
+                    mapToCreate.printArestas();
+                    System.out.println();
+                    System.out.println("Do you wish to store this map?");
+                    System.out.println("1 - Yes");
+                    System.out.println("2 - No");
+                    int saveOption = readIntWithLimit(scanner,1,2);
+                    switch (saveOption){
+                        case 1:
+                            System.out.println("What do you want to call your map?");
+                            String name = scanner.nextLine();
+                            System.out.println("Introduce the path where you wish to store the map, introduce just the folder with no \\ in front of it:");
+                            String pathToSave = scanner.nextLine();
+                            String fullPathToSave = pathToSave + "\\" + name + ".txt";
+                            exporter.saveMapToFile(mapToCreate, fullPathToSave);
+                            break;
+                        case 2:
+                            System.out.println("Are you sure you dont want to store it? This map will be lost");
+                            System.out.println("1 - Save");
+                            System.out.println("2 - Dont save");
+                            int exitWithoutSavingOption = readIntWithLimit(scanner,1,2);
+                            switch (exitWithoutSavingOption){
+                                case 1:
+                                    System.out.println("What do you want to call your map?");
+                                    String nameWithoutSaving = scanner.nextLine();
+                                    System.out.println("Introduce the path where you wish to store the map, introduce just the folder with no \\ in front of it:");
+                                    String pathToSaveWithoutSaving = scanner.nextLine();
+                                    String fullPathToSaveWithoutSaving = pathToSaveWithoutSaving + "\\" + nameWithoutSaving + ".txt";
+                                    exporter.saveMapToFile(mapToCreate, fullPathToSaveWithoutSaving);
+                                    break;
+                                case 2:
+                                    System.out.println("Your map was not stored");
+                                    break;
+                            }
+                            break;
+                    }
+                    break;
+                case 3:
+                    System.out.println("Thank you for playing!");
+                    break;
             }
-        }
-
-        Iterator<Vertice> shortestPathArestas = mapa.weightedShortestPathIterator(bandeira1, bandeira2);
-
-        // Imprima o caminho mais curto
-        System.out.println("\nCaminho mais curto de bandeira 1 para bandeira 2 por arestas:");
-
-        while (shortestPathArestas.hasNext()) {
-            System.out.print(shortestPathArestas.next().getindex());
-
-            if (shortestPathArestas.hasNext()) {
-                System.out.print(" -> ");
-            }
-        }
-
-
-        // Adicione vértices
-        graph.addVertex("A");
-        graph.addVertex("B");
-        graph.addVertex("C");
-        graph.addVertex("D");
-        graph.addVertex("E");
-        graph.addVertex("F");
-        graph.addVertex("G");
-        graph.addVertex("H");
-        graph.addVertex("I");
-        graph.addVertex("J");
-
-
-        // Adicione arestas
-        graph.addEdge("A", "B", 1.0);
-        graph.addEdge("A", "C", 2.0);
-        graph.addEdge("A", "D", 1.0);
-        graph.addEdge("A", "E", 4.0);
-        graph.addEdge("B", "F", 2.0);
-        graph.addEdge("F", "H", 1.0);
-        graph.addEdge("D", "G", 7.0);
-        graph.addEdge("G", "I", 8.0);
-        graph.addEdge("H", "I", 1.0);
-        graph.addEdge("B", "A", 1.0);
-        graph.addEdge("C", "A", 2.0);
-        graph.addEdge("D", "A", 1.0);
-        graph.addEdge("E", "A", 4.0);
-        graph.addEdge("F", "B", 2.0);
-        graph.addEdge("H", "F", 1.0);
-        graph.addEdge("G", "D", 7.0);
-        graph.addEdge("I", "G", 8.0);
-        graph.addEdge("I", "H", 1.0);
-        graph.addEdge("G", "J", 4.0);
-        graph.addEdge("J", "G", 4.0);
-        graph.addEdge("E", "J", 5.0);
-        graph.addEdge("J", "E", 5.0);
-        graph.addEdge("I", "J", 1.0);
-        graph.addEdge("J", "I", 1.0);
-        System.out.println(graph.isConnected());
-        double shortestPathWeight = graph.shortestPathWeight("A", "J");
-
-        System.out.println("Shortest path weight from " + "A" + " to " + "I" + ": " + shortestPathWeight);
-        Iterator<String> shortestPath2 = graph.iteratorShortestPath("A", "J");
-
-        // Imprima o caminho mais curto
-        System.out.println("Caminho mais curto de D para I:");
-
-        while (shortestPath2.hasNext()) {
-            System.out.print(shortestPath2.next());
-
-            if (shortestPath2.hasNext()) {
-                System.out.print(" -> ");
-            }
-        }
-
-        // Imprima o grafo
-        System.out.println("\nGraph:");
-
-        // Execute BFS a partir de um vértice
-        System.out.println("DFS from A:");
-        Iterator<String> bfsIterator = graph.iteratorDFS("A");
-        while (bfsIterator.hasNext()) {
-            System.out.print(bfsIterator.next() + " ");
-        }
-        System.out.println();
-
-        System.out.println("BFS from A:");
-        Iterator<String> bfsIterator2 = graph.iteratorBFS("A");
-        while (bfsIterator2.hasNext()) {
-            System.out.print(bfsIterator2.next() + " ");
-        }
-        System.out.println();
-
-        System.out.println("BFS from C:");
-        Iterator<String> bfsIterator3 = graph.iteratorDFS("C");
-        while (bfsIterator3.hasNext()) {
-            System.out.print(bfsIterator3.next() + " ");
-        }
-        System.out.println();
-
-        // Execute DFS a partir de um vértice
-        System.out.println("DFS from D:");
-        Iterator<String> dfsIterator4 = graph.iteratorBFS("D");
-        while (dfsIterator4.hasNext()) {
-            System.out.print(dfsIterator4.next() + " ");
-        }
-        System.out.println();
-
-        // Remova um vértice
-        graph.removeVertex("B");
-
-        // Imprima o grafo após a remoção
-        System.out.println("Graph after removing vertex B:");
-
-        System.out.println("--------------------------------------------------------------");
-
-
-        System.out.println("Introduza onde guardar o mapa");
-        String pathWrite = scanner.nextLine();
-        exporter.saveMapToFile(mapa, pathWrite);
-        
-        System.out.println("Introduza onde ler o mapa");
-        String pathRead = scanner.nextLine();
-        Mapa mapRead = importer.loadMapFromFile(pathRead);
-
-        mapRead.printMapa();
-        mapRead.printArestas();
-
-
+        }while(escolha != 3);
     }
 }
