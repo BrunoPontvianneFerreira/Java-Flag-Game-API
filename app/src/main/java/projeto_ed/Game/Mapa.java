@@ -126,13 +126,13 @@ public class Mapa extends Network<Vertice> {
 
             // Imprime o estado do vértice (ocupado ou desocupado)
             if (vertice.isOcuped()) {
-                System.out.print("[" + vertice.getBot().getNome() + "]");
+                System.out.print("[" + vertice.getBot().getNome() + "]" + "\t\t");
             } else if(vertice.isHasFlag1()) {
                 System.out.print("[F1]" + "\t\t");
             }else if(vertice.isHasFlag2()) {
                 System.out.print("[F2]" + "\t\t");
             }else{
-                System.out.print("[   ]" + "\t\t");
+                System.out.print("[  ]" + "\t\t");
             }
 
             // Adiciona uma quebra de linha após o número especificado de vértices por linha
