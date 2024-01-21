@@ -290,4 +290,14 @@ public class Mapa extends Network<Vertice> {
         }
     }
 
+    public void printNeighbors(Bot bot){
+        System.out.println("The bot is at the vertex: " + bot.getVertice_index());
+        System.out.println("Options:");
+        for(int i = 0; i < this.size(); i++){
+        if(adjMatrix[bot.getVertice_index() - 1][i] > 0 && (i != bot.getLast_vertice_index()-1)){
+            System.out.println(i+1 + ", cost: " + (int)adjMatrix[bot.getVertice_index()-1][i]);
+            }
+        }
+    }
+
 }

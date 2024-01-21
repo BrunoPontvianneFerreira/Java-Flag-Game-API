@@ -17,6 +17,7 @@ public class App {
         Mapa mapa = new Mapa(100);
         for (int i = 0; i < 100; i++) {
             Vertice v = new Vertice();
+            v.setIndex(i + 1);
             mapa.addVertex(v);
         }
 
@@ -61,26 +62,29 @@ System.out.print("\n");
         }
         System.out.print("\n");
         do {
+            mapa.printNeighbors(bot1);
             bot1.play(mapa);
             mapa.printMapa();
             Iterator<Vertice> iterator4 = mapa.iteratorShortestPath(mapa.getVertice(bot1.getVertice_index()), flag2);
-            System.out.print("BOT1");
+            System.out.println("BOT1");
             while (iterator4.hasNext()) {
                 Vertice vertice = iterator4.next();
                 System.out.print(vertice.getindex() + " -> ");
             }
+            mapa.printNeighbors(bot2);
             bot2.play(mapa);
             mapa.printMapa();
             Iterator<Vertice> iterator5 = mapa.iteratorShortestPath(mapa.getVertice(bot2.getVertice_index()), flag2);
-            System.out.print("BOT2");
+            System.out.println("BOT2");
             while (iterator5.hasNext()) {
                 Vertice vertice = iterator5.next();
                 System.out.print(vertice.getindex() + " -> ");
             }
+            mapa.printNeighbors(bot3);
             bot3.play(mapa);
             mapa.printMapa();
             Iterator<Vertice> iterator6 = mapa.iteratorShortestPath(mapa.getVertice(bot3.getVertice_index()), flag2);
-            System.out.print("BOT3");
+            System.out.println("BOT3");
             while (iterator6.hasNext()) {
                 Vertice vertice = iterator6.next();
                 System.out.print(vertice.getindex() + " -> ");
