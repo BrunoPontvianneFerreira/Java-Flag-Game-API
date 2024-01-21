@@ -40,6 +40,22 @@ public class Mapa extends Network<Vertice> {
     }
 
     /**
+     * G
+     * @return
+     */
+    public Vertice[] getVertices() {
+        return vertices;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public double[][] getAdjMatrix() {
+        return adjMatrix;
+    }
+
+    /**
      * Generates a random directed complete graph with a specified coverage rate.
      * The method populates the adjacency matrix with random distances between vertices,
      * ensuring that the graph remains directed and complete until it is connected.
