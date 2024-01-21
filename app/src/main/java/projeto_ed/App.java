@@ -6,6 +6,7 @@ package projeto_ed;
 import projeto_ed.Game.*;
 import projeto_ed.Graphs.*;
 import projeto_ed.MapsManagement.*;
+import projeto_ed.Queues.LinkedQueue;
 
 import java.util.Iterator;
 import java.util.Scanner;
@@ -13,172 +14,78 @@ import java.util.Scanner;
 public class App {
 
     public static void main(String[] args) {
-
-        Scanner scanner = new Scanner(System.in);
-        Network<String> graph = new Network<>();
-        MapExporter exporter = new MapExporter();
-        MapImporter importer = new MapImporter();
-        Mapa mapa = new Mapa(15);
-        for (int i = 1; i <= 15; i++) {
-            Vertice vertice = new Vertice();
-            mapa.addVertex(vertice);
+        Mapa mapa = new Mapa(100);
+        for (int i = 0; i < 100; i++) {
+            Vertice v = new Vertice();
+            mapa.addVertex(v);
         }
 
-        mapa.gerarGrafoCompletoAleatorioDirecionado(30);
-        System.out.println(mapa.isConnected());
-
-        // Imprimir o mapa
+        mapa.gerarGrafoCompletoAleatorioNaoDirecionado(10);
         mapa.printMapa();
         mapa.printArestas();
 
+        Vertice flag1 = mapa.getVertice(5);
+        flag1.setHasFlag1(true);
 
-        Vertice bandeira1 = mapa.getVertice(5);
-        bandeira1.setHasFlag1(true);
-        Vertice bandeira2 = mapa.getVertice(13);
-        bandeira1.setHasFlag2(false);
-        BotShortestPath bot = new BotShortestPath("B1", Equipa.EQUIPA1);
+        Vertice flag2 = mapa.getVertice(10);
+        flag2.setHasFlag2(true);
 
-        mapa.printMapa();
-        mapa.printArestas();
+        mapa.removeEdge(flag1, flag2);
+        mapa.removeEdge(flag2, flag1);
 
-        double custo = mapa.shortestPathWeight(bandeira1, bandeira2);
 
-        System.out.println("Shortest path weight from " + "bandeira 1" + " to " + "bandeira 2" + ": " + custo);
-        Iterator<Vertice> shortestPath = mapa.iteratorShortestPath(bandeira1, bandeira2);
+        BotShortestPath bot1 = new BotShortestPath("B1", Equipa.EQUIPA1);
+        BotTree bot2 = new BotTree("B2", Equipa.EQUIPA1);
+        BotShortestEdge bot3 = new BotShortestEdge("B3", Equipa.EQUIPA1);
+        bot1.createRout(mapa, flag1, flag2);
+        bot2.createRout(mapa, flag1, flag2);
+        bot3.createRout(mapa, flag1, flag2);
 
-        // Imprima o caminho mais curto
-        System.out.println("Caminho mais curto de bandeira 1 para bandeira 2:");
+        Iterator<Vertice> iterator1 = mapa.iteratorShortestPath(flag1, flag2);
+        Iterator<Vertice> iterator2 = mapa.treeIterator(flag1, flag2);
+        Iterator<Vertice> iterator3 = mapa.weightedShortestPathIterator(flag1, flag2);
 
-        while (shortestPath.hasNext()) {
-            System.out.print(shortestPath.next().getindex());
-
-            if (shortestPath.hasNext()) {
-                System.out.print(" -> ");
+        while (iterator1.hasNext()) {
+            Vertice vertice = iterator1.next();
+            System.out.print(vertice.getindex() + " -> ");
+        }
+System.out.print("\n");
+        while (iterator2.hasNext()) {
+            Vertice vertice = iterator2.next();
+            System.out.print(vertice.getindex() + " -> ");
+        }
+        System.out.print("\n");
+        while (iterator3.hasNext()) {
+            Vertice vertice = iterator3.next();
+            System.out.print(vertice.getindex() + " -> ");
+        }
+        System.out.print("\n");
+        do {
+            bot1.play(mapa);
+            mapa.printMapa();
+            Iterator<Vertice> iterator4 = mapa.iteratorShortestPath(mapa.getVertice(bot1.getVertice_index()), flag2);
+            System.out.print("BOT1");
+            while (iterator4.hasNext()) {
+                Vertice vertice = iterator4.next();
+                System.out.print(vertice.getindex() + " -> ");
             }
-        }
-
-        Iterator<Vertice> shortestPathArestas = mapa.weightedShortestPathIterator(bandeira1, bandeira2);
-
-        // Imprima o caminho mais curto
-        System.out.println("\nCaminho mais curto de bandeira 1 para bandeira 2 por arestas:");
-
-        while (shortestPathArestas.hasNext()) {
-            System.out.print(shortestPathArestas.next().getindex());
-
-            if (shortestPathArestas.hasNext()) {
-                System.out.print(" -> ");
+            bot2.play(mapa);
+            mapa.printMapa();
+            Iterator<Vertice> iterator5 = mapa.iteratorShortestPath(mapa.getVertice(bot2.getVertice_index()), flag2);
+            System.out.print("BOT2");
+            while (iterator5.hasNext()) {
+                Vertice vertice = iterator5.next();
+                System.out.print(vertice.getindex() + " -> ");
             }
-        }
-
-
-        // Adicione vértices
-        graph.addVertex("A");
-        graph.addVertex("B");
-        graph.addVertex("C");
-        graph.addVertex("D");
-        graph.addVertex("E");
-        graph.addVertex("F");
-        graph.addVertex("G");
-        graph.addVertex("H");
-        graph.addVertex("I");
-        graph.addVertex("J");
-
-
-        // Adicione arestas
-        graph.addEdge("A", "B", 1.0);
-        graph.addEdge("A", "C", 2.0);
-        graph.addEdge("A", "D", 1.0);
-        graph.addEdge("A", "E", 4.0);
-        graph.addEdge("B", "F", 2.0);
-        graph.addEdge("F", "H", 1.0);
-        graph.addEdge("D", "G", 7.0);
-        graph.addEdge("G", "I", 8.0);
-        graph.addEdge("H", "I", 1.0);
-        graph.addEdge("B", "A", 1.0);
-        graph.addEdge("C", "A", 2.0);
-        graph.addEdge("D", "A", 1.0);
-        graph.addEdge("E", "A", 4.0);
-        graph.addEdge("F", "B", 2.0);
-        graph.addEdge("H", "F", 1.0);
-        graph.addEdge("G", "D", 7.0);
-        graph.addEdge("I", "G", 8.0);
-        graph.addEdge("I", "H", 1.0);
-        graph.addEdge("G", "J", 4.0);
-        graph.addEdge("J", "G", 4.0);
-        graph.addEdge("E", "J", 5.0);
-        graph.addEdge("J", "E", 5.0);
-        graph.addEdge("I", "J", 1.0);
-        graph.addEdge("J", "I", 1.0);
-        System.out.println(graph.isConnected());
-        double shortestPathWeight = graph.shortestPathWeight("A", "J");
-
-        System.out.println("Shortest path weight from " + "A" + " to " + "I" + ": " + shortestPathWeight);
-        Iterator<String> shortestPath2 = graph.iteratorShortestPath("A", "J");
-
-        // Imprima o caminho mais curto
-        System.out.println("Caminho mais curto de D para I:");
-
-        while (shortestPath2.hasNext()) {
-            System.out.print(shortestPath2.next());
-
-            if (shortestPath2.hasNext()) {
-                System.out.print(" -> ");
+            bot3.play(mapa);
+            mapa.printMapa();
+            Iterator<Vertice> iterator6 = mapa.iteratorShortestPath(mapa.getVertice(bot3.getVertice_index()), flag2);
+            System.out.print("BOT3");
+            while (iterator6.hasNext()) {
+                Vertice vertice = iterator6.next();
+                System.out.print(vertice.getindex() + " -> ");
             }
-        }
-
-        // Imprima o grafo
-        System.out.println("\nGraph:");
-
-        // Execute BFS a partir de um vértice
-        System.out.println("DFS from A:");
-        Iterator<String> bfsIterator = graph.iteratorDFS("A");
-        while (bfsIterator.hasNext()) {
-            System.out.print(bfsIterator.next() + " ");
-        }
-        System.out.println();
-
-        System.out.println("BFS from A:");
-        Iterator<String> bfsIterator2 = graph.iteratorBFS("A");
-        while (bfsIterator2.hasNext()) {
-            System.out.print(bfsIterator2.next() + " ");
-        }
-        System.out.println();
-
-        System.out.println("BFS from C:");
-        Iterator<String> bfsIterator3 = graph.iteratorDFS("C");
-        while (bfsIterator3.hasNext()) {
-            System.out.print(bfsIterator3.next() + " ");
-        }
-        System.out.println();
-
-        // Execute DFS a partir de um vértice
-        System.out.println("DFS from D:");
-        Iterator<String> dfsIterator4 = graph.iteratorBFS("D");
-        while (dfsIterator4.hasNext()) {
-            System.out.print(dfsIterator4.next() + " ");
-        }
-        System.out.println();
-
-        // Remova um vértice
-        graph.removeVertex("B");
-
-        // Imprima o grafo após a remoção
-        System.out.println("Graph after removing vertex B:");
-
-        System.out.println("--------------------------------------------------------------");
-
-
-        System.out.println("Introduza onde guardar o mapa");
-        String pathWrite = scanner.nextLine();
-        exporter.saveMapToFile(mapa, pathWrite);
-        
-        System.out.println("Introduza onde ler o mapa");
-        String pathRead = scanner.nextLine();
-        Mapa mapRead = importer.loadMapFromFile(pathRead);
-
-        mapRead.printMapa();
-        mapRead.printArestas();
-
+        } while (!bot1.getRota().isEmpty() && !bot2.getRota().isEmpty() && !bot3.getRota().isEmpty());
 
     }
 }

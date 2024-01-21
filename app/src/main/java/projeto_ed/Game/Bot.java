@@ -6,7 +6,6 @@ import java.util.Iterator;
 
 public abstract class Bot {
     Equipa equipa;
-    private Vertice vertice;
     private String nome;
     private LinkedQueue<Vertice> rota;
 
@@ -29,14 +28,6 @@ public abstract class Bot {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public Vertice getVertice() {
-        return vertice;
-    }
-
-    public void setVertice(Vertice vertice) {
-        this.vertice = vertice;
     }
 
     public Equipa getEquipa(){

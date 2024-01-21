@@ -28,7 +28,7 @@ public class BotShortestEdge extends Bot implements IBot{
         if (getRota() == null) {
             createRout(map, map.getVertice(this.getVertice_index()), map.getVertice(this.getFlag_index()));
         }
-        Vertice vertice =  getRota().first();
+        Vertice vertice = getRota().first();
         if(!vertice.isOcuped()){
             this.setLast_vertice_index(this.getVertice_index());
             map.getVertice(this.getVertice_index()).setBot(null);
