@@ -1,6 +1,7 @@
 package projeto_ed.Game;
 
 import projeto_ed.Graphs.Network;
+import projeto_ed.Heaps.PriorityQueue;
 import projeto_ed.Lists.DoublyUnorderedLinkedList;
 import projeto_ed.Queues.LinkedQueue;
 
@@ -203,5 +204,74 @@ public class Mapa extends Network<Vertice> {
     }
 
 
+
+    public Iterator<Vertice> treeIterator(Vertice startVertex, Vertice targetVertex) {
+        int startIndex = getIndex(startVertex);
+        int targetIndex = getIndex(targetVertex);
+
+        if (!indexIsValid(startIndex) || !indexIsValid(targetIndex)) {
+            throw new IllegalArgumentException("Invalid start or target vertex");
+        }
+
+        PriorityQueue<Edge> minHeap = new PriorityQueue<>();
+        boolean[] visited = new boolean[numVertices];
+        int[] parent = new int[numVertices];
+
+        for (int i = 0; i < numVertices; i++) {
+            visited[i] = false;
+            parent[i] = -1;
+        }
+
+        minHeap.addElement(new Edge(startIndex, startIndex, 0), 0);
+
+        while (!minHeap.isEmpty()) {
+            Edge currentEdge = minHeap.removeNext();
+            int currentVertex = currentEdge.destination;
+
+            if (visited[currentVertex]) {
+                continue;
+            }
+
+            visited[currentVertex] = true;
+
+            if (currentEdge.source != currentEdge.destination) {
+                parent[currentVertex] = currentEdge.source;
+            }
+
+            for (int neighbor = 0; neighbor < numVertices; neighbor++) {
+                if (getAdjMatrix()[currentVertex][neighbor] > 0 && !visited[neighbor]) {
+                    Edge newEdge = new Edge(currentVertex, neighbor, (int) getAdjMatrix()[currentVertex][neighbor]);
+                    minHeap.addElement(newEdge, newEdge.weight);
+                }
+            }
+        }
+
+        DoublyUnorderedLinkedList<Vertice> resultList = new DoublyUnorderedLinkedList<>();
+        int currentVertex = targetIndex;
+
+        while (currentVertex != -1) {
+            resultList.addToFront(vertices[currentVertex]);
+            currentVertex = parent[currentVertex];
+        }
+
+        return resultList.iterator();
+    }
+
+
+    public class Edge implements Comparable<Edge> {
+        int source, destination, weight;
+
+        public Edge(int source, int destination, int weight) {
+            this.source = source;
+            this.destination = destination;
+            this.weight = weight;
+        }
+
+
+        @Override
+        public int compareTo(Edge o) {
+            return Integer.compare(this.weight, o.weight);
+        }
+    }
 
 }
