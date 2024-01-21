@@ -17,6 +17,7 @@ public class Network<T> extends Graph<T> implements NetworkADT<T> {
     }
 
     public Network() {
+        super();
     }
 
     /**

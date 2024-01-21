@@ -406,4 +406,12 @@ public class Graph<T> implements GraphADT<T> {
         return false;
     }
 
+    /**
+     * Obtém a matriz de adjacência.
+     *
+     * @return A matriz de adjacência.
+     */
+    public double[][] getAdjMatrix() {
+        return adjMatrix;
+    }
 }

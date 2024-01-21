@@ -1,7 +1,10 @@
 package projeto_ed.Game;
 
 public class Vertice {
-    int index;
+
+    private static int num = 1;
+
+    private int index;
     private Bot bot;
 
     private boolean hasFlag1;
@@ -10,6 +13,8 @@ public class Vertice {
 
     public Vertice() {
         bot = null;
+        index = num;
+        num += 1;
     }
 
     public boolean isOcuped() {
