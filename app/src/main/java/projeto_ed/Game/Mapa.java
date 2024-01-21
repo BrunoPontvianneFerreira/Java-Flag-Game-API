@@ -219,6 +219,15 @@ public class Mapa extends Network<Vertice> {
         return resultList.iterator();
     }
 
+    /**
+     *
+     */
+    public void generateVertexs(int mapSize){
+        for(int i = 1; i <= mapSize; i++){
+            Vertice vertice = new Vertice();
+            this.addVertex(vertice);
+        }
+    }
 
 
     public Iterator<Vertice> treeIterator(Vertice startVertex, Vertice targetVertex) {

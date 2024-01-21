@@ -6,90 +6,169 @@ package projeto_ed;
 import projeto_ed.Game.*;
 import projeto_ed.Graphs.*;
 import projeto_ed.MapsManagement.*;
-import projeto_ed.Queues.LinkedQueue;
 
+import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.Scanner;
 
 public class App {
 
+
+    public static int readIntWithLimit(Scanner read, int min, int max) {
+        boolean valid = false;
+        int option = 0;
+        while (!valid) {
+            try {
+                option = read.nextInt();
+            } catch (InputMismatchException e) {
+                read.nextLine();
+                continue;
+            }
+            if (option >= min && option <= max) {
+                valid = true;
+            }
+            read.nextLine();
+        }
+        return option;
+    }
+
     public static void main(String[] args) {
-        Mapa mapa = new Mapa(100);
-        for (int i = 0; i < 100; i++) {
-            Vertice v = new Vertice();
-            v.setIndex(i + 1);
-            mapa.addVertex(v);
+
+        Scanner scanner = new Scanner(System.in);
+        MapExporter exporter = new MapExporter();
+        MapImporter importer = new MapImporter();
+        Mapa mapa = new Mapa(15);
+        for (int i = 1; i <= 15; i++) {
+            Vertice vertice = new Vertice();
+            mapa.addVertex(vertice);
         }
+        int escolha;
 
-        mapa.gerarGrafoCompletoAleatorioNaoDirecionado(10);
-        mapa.printMapa();
-        mapa.printArestas();
-
-        Vertice flag1 = mapa.getVertice(5);
-        flag1.setHasFlag1(true);
-
-        Vertice flag2 = mapa.getVertice(10);
-        flag2.setHasFlag2(true);
-
-        mapa.removeEdge(flag1, flag2);
-        mapa.removeEdge(flag2, flag1);
-
-
-        BotShortestPath bot1 = new BotShortestPath("B1", Equipa.EQUIPA1);
-        BotTree bot2 = new BotTree("B2", Equipa.EQUIPA1);
-        BotShortestEdge bot3 = new BotShortestEdge("B3", Equipa.EQUIPA1);
-        bot1.createRout(mapa, flag1, flag2);
-        bot2.createRout(mapa, flag1, flag2);
-        bot3.createRout(mapa, flag1, flag2);
-
-        Iterator<Vertice> iterator1 = mapa.iteratorShortestPath(flag1, flag2);
-        Iterator<Vertice> iterator2 = mapa.treeIterator(flag1, flag2);
-        Iterator<Vertice> iterator3 = mapa.weightedShortestPathIterator(flag1, flag2);
-
-        while (iterator1.hasNext()) {
-            Vertice vertice = iterator1.next();
-            System.out.print(vertice.getindex() + " -> ");
-        }
-System.out.print("\n");
-        while (iterator2.hasNext()) {
-            Vertice vertice = iterator2.next();
-            System.out.print(vertice.getindex() + " -> ");
-        }
-        System.out.print("\n");
-        while (iterator3.hasNext()) {
-            Vertice vertice = iterator3.next();
-            System.out.print(vertice.getindex() + " -> ");
-        }
-        System.out.print("\n");
         do {
-            mapa.printNeighbors(bot1);
-            bot1.play(mapa);
-            mapa.printMapa();
-            Iterator<Vertice> iterator4 = mapa.iteratorShortestPath(mapa.getVertice(bot1.getVertice_index()), flag2);
-            System.out.println("BOT1");
-            while (iterator4.hasNext()) {
-                Vertice vertice = iterator4.next();
-                System.out.print(vertice.getindex() + " -> ");
-            }
-            mapa.printNeighbors(bot2);
-            bot2.play(mapa);
-            mapa.printMapa();
-            Iterator<Vertice> iterator5 = mapa.iteratorShortestPath(mapa.getVertice(bot2.getVertice_index()), flag2);
-            System.out.println("BOT2");
-            while (iterator5.hasNext()) {
-                Vertice vertice = iterator5.next();
-                System.out.print(vertice.getindex() + " -> ");
-            }
-            mapa.printNeighbors(bot3);
-            bot3.play(mapa);
-            mapa.printMapa();
-            Iterator<Vertice> iterator6 = mapa.iteratorShortestPath(mapa.getVertice(bot3.getVertice_index()), flag2);
-            System.out.println("BOT3");
-            while (iterator6.hasNext()) {
-                Vertice vertice = iterator6.next();
-                System.out.print(vertice.getindex() + " -> ");
-            }
-        } while (!bot1.getRota().isEmpty() && !bot2.getRota().isEmpty() && !bot3.getRota().isEmpty());
+            System.out.println("====Menu====");
+            System.out.println("1 - Play a match");
+            System.out.println("2 - Map Creator menu");
+            System.out.println("3 - Exit");
+            escolha = readIntWithLimit(scanner, 1, 3);
+            Mapa mapToUse;
+            Mapa mapToCreate;
+            switch (escolha) {
+                case 1:
+                    System.out.println("====Let´s begin====");
+                    System.out.println("Do you wish to:");
+                       System.out.println("1 - Import a map");
+                       System.out.println("2 - Create one");
+                       int mapAnswer = readIntWithLimit(scanner,1,2);
+                       switch (mapAnswer){
+                           case 1:
+                               System.out.println("Introduce the path for the map you want to import:");
+                               String pathMap = scanner.nextLine();
+                               mapToUse = importer.loadMapFromFile(pathMap);
+                               break;
+                           case 2:
+                               System.out.println("How many positions do you want your map to have, minimum 10 and maximum 100:");
+                               int mapSizeToUse = readIntWithLimit(scanner,10,100);
+                               mapToUse = new Mapa(mapSizeToUse);
+                               mapToUse.generateVertexs(mapSizeToUse);
+                               System.out.println("Do you want your map to be:");
+                               System.out.println("1 - Directional");
+                               System.out.println("2 - Non directional");
+                               int mapTypeToUse = readIntWithLimit(scanner,1,2);
+                               int coverageToUse;
+                               switch (mapTypeToUse){
+                                   case 1:
+                                       System.out.println("Introduce the coverage you want to have on this map, you need a minimum of 30% coverage in this case:");
+                                       coverageToUse = readIntWithLimit(scanner,30,100);
+                                       mapToUse.gerarGrafoCompletoAleatorioDirecionado(coverageToUse);
+                                       break;
+                                   case 2:
+                                       System.out.println("Introduce the coverage you want to have on this map, you need a minimum of 20% coverage in this case:");
+                                       coverageToUse = readIntWithLimit(scanner,20,100);
+                                       mapToUse.gerarGrafoCompletoAleatorioNaoDirecionado(coverageToUse);
+                                       break;
+                               }
+                               System.out.println("This is the map you generated:");
+                               mapToUse.printMapa();
+                               System.out.println();
+                               System.out.println("This are the map edges:");
+                               mapToUse.printArestas();
+                               System.out.println();
+                               break;
+                       }
 
+
+                    break;
+                case 2:
+                    System.out.println("====Map Creation Menu====");
+                    System.out.println("Welcome to the map creation menu." +
+                            "\nAfter you have created your map we will ask you the path where you want to store the created map." +
+                            "\nKeep in mind that if you choose to not save the map you will lose it.");
+                    System.out.println("Let´s create the perfect map");
+                    System.out.println("How many positions do you want your map to have, minimum 10 and maximum 100:");
+                    int mapSize = readIntWithLimit(scanner,10,100);
+                    mapToCreate = new Mapa(mapSize);
+                    mapToCreate.generateVertexs(mapSize);
+                    System.out.println("Do you want your map to be:");
+                    System.out.println("1 - Directional");
+                    System.out.println("2 - Non directional");
+                    int mapType = readIntWithLimit(scanner,1,2);
+                    int coverage;
+                    switch (mapType){
+                        case 1:
+                            System.out.println("Introduce the coverage you want to have on this map, you need a minimum of 30% coverage in this case:");
+                            coverage = readIntWithLimit(scanner,30,100);
+                            mapToCreate.gerarGrafoCompletoAleatorioDirecionado(coverage);
+                            break;
+                        case 2:
+                            System.out.println("Introduce the coverage you want to have on this map, you need a minimum of 20% coverage in this case:");
+                            coverage = readIntWithLimit(scanner,20,100);
+                            mapToCreate.gerarGrafoCompletoAleatorioNaoDirecionado(coverage);
+                            break;
+                    }
+                    System.out.println("This is the map you generated:");
+                    mapToCreate.printMapa();
+                    System.out.println();
+                    System.out.println("These are the map edges:");
+                    mapToCreate.printArestas();
+                    System.out.println();
+                    System.out.println("Do you wish to store this map?");
+                    System.out.println("1 - Yes");
+                    System.out.println("2 - No");
+                    int saveOption = readIntWithLimit(scanner,1,2);
+                    switch (saveOption){
+                        case 1:
+                            System.out.println("What do you want to call your map?");
+                            String name = scanner.nextLine();
+                            System.out.println("Introduce the path where you wish to store the map, introduce just the folder with no \\ in front of it:");
+                            String pathToSave = scanner.nextLine();
+                            String fullPathToSave = pathToSave + "\\" + name + ".txt";
+                            exporter.saveMapToFile(mapToCreate, fullPathToSave);
+                            break;
+                        case 2:
+                            System.out.println("Are you sure you dont want to store it? This map will be lost");
+                            System.out.println("1 - Save");
+                            System.out.println("2 - Dont save");
+                            int exitWithoutSavingOption = readIntWithLimit(scanner,1,2);
+                            switch (exitWithoutSavingOption){
+                                case 1:
+                                    System.out.println("What do you want to call your map?");
+                                    String nameWithoutSaving = scanner.nextLine();
+                                    System.out.println("Introduce the path where you wish to store the map, introduce just the folder with no \\ in front of it:");
+                                    String pathToSaveWithoutSaving = scanner.nextLine();
+                                    String fullPathToSaveWithoutSaving = pathToSaveWithoutSaving + "\\" + nameWithoutSaving + ".txt";
+                                    exporter.saveMapToFile(mapToCreate, fullPathToSaveWithoutSaving);
+                                    break;
+                                case 2:
+                                    System.out.println("Your map was not stored");
+                                    break;
+                            }
+                            break;
+                    }
+                    break;
+                case 3:
+                    System.out.println("Thank you for playing!");
+                    break;
+            }
+        }while(escolha != 3);
     }
 }

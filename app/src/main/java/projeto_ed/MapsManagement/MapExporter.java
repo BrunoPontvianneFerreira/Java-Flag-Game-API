@@ -11,7 +11,7 @@ public class MapExporter implements Exporter{
     public void saveMapToFile(Mapa map, String fileName) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
 
-            if(map.size() != 0) {
+            if(!map.isEmpty()) {
                 writer.write(map.size() + "\n");
                 for (int i = 0; i < map.size(); i++) {
                     for (int j = 0; j < map.size(); j++) {

@@ -8,12 +8,7 @@ import projeto_ed.Game.Vertice;
 
 public class MapImporter implements Importer{
 
-    /**
-     * Load a map from a file.
-     *
-     * @param fileName The name of the file containing map details.
-     * @return A new Mapa instance based on the information in the file.
-     */
+
     public Mapa loadMapFromFile(String fileName) {
 
         Mapa map = null;
