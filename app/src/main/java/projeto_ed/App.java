@@ -171,6 +171,13 @@ public class App {
         System.out.println("Introduza onde guardar o mapa");
         String pathWrite = scanner.nextLine();
         exporter.saveMapToFile(mapa, pathWrite);
+        
+        System.out.println("Introduza onde ler o mapa");
+        String pathRead = scanner.nextLine();
+        Mapa mapRead = importer.loadMapFromFile(pathRead);
+
+        mapRead.printMapa();
+        mapRead.printArestas();
 
 
     }
