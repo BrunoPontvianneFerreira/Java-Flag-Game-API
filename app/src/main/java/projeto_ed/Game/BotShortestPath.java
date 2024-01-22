@@ -5,11 +5,11 @@ import projeto_ed.Queues.LinkedQueue;
 import java.util.Iterator;
 
 public class BotShortestPath extends Bot implements IBot {
-    private double routWeight;
+    private double routeWeight;
 
     public BotShortestPath(String botName, Team team) {
         super(botName, team);
-        routWeight = 0;
+        routeWeight = 0;
         this.setRota(new LinkedQueue<>());
     }
 
@@ -22,34 +22,38 @@ public class BotShortestPath extends Bot implements IBot {
             Vertex vertex = it.next();
             rota.enqueue(vertex);
         }
-        routWeight = map.shortestPathWeight(startVertex, flag);
+        routeWeight = map.shortestPathWeight(startVertex, flag);
         rota.dequeue();
         this.setRota(rota);
     }
 
     @Override
     public void play(Map map) {
-        if (getRota() == null) {
+        if (getRota().isEmpty()) {
             createRout(map, map.getVertice(this.getVerticeIndex()), map.getVertice(this.getFlagIndex()));
         }
         Vertex vertex = getRota().first();
-        if (!vertex.isOccupied()) {
-            this.setLastVerticeIndex(this.getVerticeIndex());
-            map.getVertice(this.getVerticeIndex()).setBot(null);
-            vertex.setBot(this);
-            getRota().dequeue();
-            this.setVerticeIndex(vertex.getindex());
-        } else {
-            Vertex currentVertex = map.getVertice(this.getVerticeIndex());
-            Vertex nextVertex = findNextAvailableVertex(map, currentVertex);
-
-            if (nextVertex != null) {
+        if(vertex != null) {
+            if (!vertex.isOccupied()) {
                 this.setLastVerticeIndex(this.getVerticeIndex());
-                createRout(map, nextVertex, map.getVertice(this.getFlagIndex()));
                 map.getVertice(this.getVerticeIndex()).setBot(null);
-                nextVertex.setBot(this);
-                this.setVerticeIndex(nextVertex.getindex());
+                vertex.setBot(this);
+                getRota().dequeue();
+                this.setVerticeIndex(vertex.getindex());
+            } else {
+                Vertex currentVertex = map.getVertice(this.getVerticeIndex());
+                Vertex nextVertex = findNextAvailableVertex(map, currentVertex);
+
+                if (nextVertex != null) {
+                    this.setLastVerticeIndex(this.getVerticeIndex());
+                    createRout(map, nextVertex, map.getVertice(this.getFlagIndex()));
+                    map.getVertice(this.getVerticeIndex()).setBot(null);
+                    nextVertex.setBot(this);
+                    this.setVerticeIndex(nextVertex.getindex());
+                }
             }
+        }else{
+            createRout(map, map.getVertice(this.getVerticeIndex()), map.getVertice(this.getFlagIndex()));
         }
     }
 
@@ -61,7 +65,7 @@ public class BotShortestPath extends Bot implements IBot {
         double[][] matriz = map.getAdjMatrix();
         for (int i = 0; i < map.size(); i++) {
             if (matriz[currentVertex.getindex() - 1][i] > 0 && (i != this.getLastVerticeIndex()-1) && !map.getVertice(i+1).isOccupied()) {
-                custo = map.shortestPathWeight(map.getVertice(i), map.getVertice(this.getFlagIndex()));
+                custo = map.shortestPathWeight(map.getVertice(i + 1), map.getVertice(this.getFlagIndex()));
                 if(custo < menorCusto){
                     menorCusto = custo;
                     index = i;

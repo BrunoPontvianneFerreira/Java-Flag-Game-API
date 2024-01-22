@@ -25,27 +25,31 @@ public class BotShortestEdge extends Bot implements IBot{
 
     @Override
     public void play(Map map) {
-        if (getRota() == null) {
+        if (getRota().isEmpty()) {
             createRout(map, map.getVertice(this.getVerticeIndex()), map.getVertice(this.getFlagIndex()));
         }
         Vertex vertex = getRota().first();
-        if(!vertex.isOccupied()){
-            this.setLastVerticeIndex(this.getVerticeIndex());
-            map.getVertice(this.getVerticeIndex()).setBot(null);
-            vertex.setBot(this);
-            getRota().dequeue();
-            this.setVerticeIndex(vertex.getindex());
-        }else {
-            Vertex currentVertex = map.getVertice(this.getVerticeIndex());
-            Vertex nextVertex = findNextAvailableVertex(map, currentVertex);
-
-            if (nextVertex != null) {
+        if(vertex != null) {
+            if (!vertex.isOccupied()) {
                 this.setLastVerticeIndex(this.getVerticeIndex());
-                createRout(map, nextVertex, map.getVertice(this.getFlagIndex()));
                 map.getVertice(this.getVerticeIndex()).setBot(null);
-                nextVertex.setBot(this);
-                this.setVerticeIndex(nextVertex.getindex());
+                vertex.setBot(this);
+                getRota().dequeue();
+                this.setVerticeIndex(vertex.getindex());
+            } else {
+                Vertex currentVertex = map.getVertice(this.getVerticeIndex());
+                Vertex nextVertex = findNextAvailableVertex(map, currentVertex);
+
+                if (nextVertex != null) {
+                    this.setLastVerticeIndex(this.getVerticeIndex());
+                    createRout(map, nextVertex, map.getVertice(this.getFlagIndex()));
+                    map.getVertice(this.getVerticeIndex()).setBot(null);
+                    nextVertex.setBot(this);
+                    this.setVerticeIndex(nextVertex.getindex());
+                }
             }
+        }else{
+            createRout(map, map.getVertice(this.getVerticeIndex()), map.getVertice(this.getFlagIndex()));
         }
     }
 
