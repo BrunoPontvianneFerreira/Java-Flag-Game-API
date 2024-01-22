@@ -4,7 +4,16 @@ import projeto_ed.Queues.LinkedQueue;
 
 import java.util.Iterator;
 
+/**
+ * Represents a Bot using the shortestEdge route in the game.
+ */
 public class BotShortestEdge extends Bot implements IBot{
+
+    /**
+     * Constructor method for the BotShortestEdge class
+     * @param botName The bot name
+     * @param team The bot team
+     */
     public BotShortestEdge(String botName, Team team) {
         super(botName, team);
         this.setRota(new LinkedQueue<>());
@@ -56,6 +65,13 @@ public class BotShortestEdge extends Bot implements IBot{
         }
     }
 
+    /**
+     * Finds the next available vertex for the bot to move to, considering the adjacency matrix.
+     *
+     * @param map            The map on which the bot is playing.
+     * @param currentVertex  The current vertex of the bot.
+     * @return The next available vertex, or null if no such vertex is found or there aren´t any available.
+     */
     private Vertex findNextAvailableVertex(Map map, Vertex currentVertex) {
         double[][] matriz = map.getAdjMatrix();
         for (int i = 0; i < map.size(); i++) {

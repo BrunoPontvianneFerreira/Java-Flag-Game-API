@@ -9,27 +9,27 @@ import java.util.Iterator;
 import java.util.Random;
 
 /**
- * The Mapa class represents a map with vertices and adjacency matrix.
+ * The Map class represents a map with vertices and adjacency matrix.
  * It allows creating a map with a specified number of vertices.
  */
-public class Map extends Network<Vertex> {
+public class Map extends Network<Vertex> implements IMap {
 
     /**
-     * Constructs a Mapa with the specified number of vertices.
+     * Constructs a Map with the specified number of vertices.
      *
      * @param num The number of vertices in the map.
      */
-    public Map(int num){
+    public Map(int num) {
         this.adjMatrix = new double[num][num];
-        this.vertices =  new Vertex[num];
+        this.vertices = new Vertex[num];
         this.numVertices = 0;
     }
 
     /**
-     * Retrieves the Vertice object at the specified position in the map.
+     * Retrieves the Vertex object at the specified position in the map.
      *
-     * @param position The position of the desired Vertice (starting from 1).
-     * @return The Vertice object at the specified position.
+     * @param position The position of the desired Vertex (starting from 1).
+     * @return The Vertex object at the specified position.
      * @throws IllegalArgumentException If the specified position is invalid.
      */
     public Vertex getVertice(int position) {
@@ -41,20 +41,13 @@ public class Map extends Network<Vertex> {
     }
 
     /**
-     *
-     * @return
+     * @return The adjacency matrix of the map
      */
     public double[][] getAdjMatrix() {
         return adjMatrix;
     }
 
-    /**
-     * Generates a random directed complete graph with a specified coverage rate.
-     * The method populates the adjacency matrix with random distances between vertices,
-     * ensuring that the graph remains directed and complete until it is connected.
-     *
-     * @param taxaCobertura The coverage rate indicating the likelihood of creating an edge between vertices (0 to 100).
-     */
+    @Override
     public void generateRandomCompleteDirectionalGraph(int taxaCobertura) {
         Random random = new Random();
         int maxArestas = numVertices * (numVertices - 1);
@@ -75,13 +68,8 @@ public class Map extends Network<Vertex> {
         } while (!isConnected());
     }
 
-    /**
-     * Generates a random undirected complete graph with a specified coverage rate.
-     * The method populates the adjacency matrix with random distances between vertices,
-     * ensuring that the graph remains undirected and complete until it is connected.
-     *
-     * @param taxaCobertura The coverage rate indicating the likelihood of creating an edge between vertices (0 to 100).
-     */
+
+    @Override
     public void generateRandomCompleteNonDirectionalGraph(int taxaCobertura) {
         Random random = new Random();
 
@@ -110,17 +98,23 @@ public class Map extends Network<Vertex> {
      */
     private void resetGraph() {
         for (int i = 0; i < numVertices; i++) {
-            for(int j=0; j<numVertices; j++){
+            for (int j = 0; j < numVertices; j++) {
                 adjMatrix[i][j] = 0;
             }
         }
     }
 
+    /**
+     * Generates a random distance.
+     *
+     * @return The randomly generated distance.
+     */
     private int generateRandomDistance() {
         Random random = new Random();
-        return (int)(1 + random.nextDouble() * 14);
+        return (int) (1 + random.nextDouble() * 14);
     }
 
+    @Override
     public void printMap() {
         System.out.println("MAP:");
 
@@ -136,11 +130,11 @@ public class Map extends Network<Vertex> {
             // Imprime o estado do vértice (ocupado ou desocupado)
             if (vertex.isOccupied()) {
                 System.out.print("[" + vertex.getBot().getNome() + "]" + "\t\t");
-            } else if(vertex.isHasFlag1()) {
+            } else if (vertex.isHasFlag1()) {
                 System.out.print("[F1]" + "\t\t");
-            }else if(vertex.isHasFlag2()) {
+            } else if (vertex.isHasFlag2()) {
                 System.out.print("[F2]" + "\t\t");
-            }else{
+            } else {
                 System.out.print("[  ]" + "\t\t");
             }
 
@@ -153,6 +147,7 @@ public class Map extends Network<Vertex> {
         }
     }
 
+    @Override
     public void printEdges() {
         System.out.println("EDGES:");
 
@@ -166,6 +161,7 @@ public class Map extends Network<Vertex> {
         }
     }
 
+    @Override
     public Iterator<Vertex> weightedShortestPathIterator(Vertex startVertex, Vertex targetVertex) {
         int startIndex = getIndex(startVertex);
         int targetIndex = getIndex(targetVertex);
@@ -211,18 +207,16 @@ public class Map extends Network<Vertex> {
         return resultList.iterator();
     }
 
-    /**
-     *
-     */
-    public void generateVertexs(int mapSize){
-        for(int i = 1; i <= mapSize; i++){
+    @Override
+    public void generateEdges(int mapSize) {
+        for (int i = 1; i <= mapSize; i++) {
             Vertex vertex = new Vertex();
             vertex.setIndex(i);
             this.addVertex(vertex);
         }
     }
 
-
+    @Override
     public Iterator<Vertex> treeIterator(Vertex startVertex, Vertex targetVertex) {
         int startIndex = getIndex(startVertex);
         int targetIndex = getIndex(targetVertex);
@@ -279,25 +273,38 @@ public class Map extends Network<Vertex> {
     public class Edge implements Comparable<Edge> {
         int source, destination, weight;
 
+        /**
+         * The constructor for the Edge class.
+         *
+         * @param source      The start of the edge.
+         * @param destination The end of the edge.
+         * @param weight      The distance between those two vertexes.
+         */
         public Edge(int source, int destination, int weight) {
             this.source = source;
             this.destination = destination;
             this.weight = weight;
         }
 
-
+        /**
+         * Compares edges based on their weights.
+         *
+         * @param o The edge to compare to.
+         * @return A negative integer, zero, or a positive integer as this edge is less than, equal to, or greater than the specified edge.
+         */
         @Override
         public int compareTo(Edge o) {
             return Integer.compare(this.weight, o.weight);
         }
     }
 
-    public void printNeighbors(Bot bot){
+    @Override
+    public void printNeighbors(Bot bot) {
         System.out.println("The bot is at the vertex: " + bot.getVerticeIndex());
         System.out.println("Options:");
-        for(int i = 0; i < this.size(); i++){
-        if(adjMatrix[bot.getVerticeIndex() - 1][i] > 0 && (i != bot.getLastVerticeIndex()-1)){
-            System.out.println(i+1 + ", cost: " + (int)adjMatrix[bot.getVerticeIndex()-1][i]);
+        for (int i = 0; i < this.size(); i++) {
+            if (adjMatrix[bot.getVerticeIndex() - 1][i] > 0 && (i != bot.getLastVerticeIndex() - 1)) {
+                System.out.println(i + 1 + ", cost: " + (int) adjMatrix[bot.getVerticeIndex() - 1][i]);
             }
         }
     }

@@ -14,6 +14,13 @@ import java.util.Scanner;
 public class App {
 
 
+    /**
+     * Controls the limits of the input.
+     * @param read Scanner that reads the input
+     * @param min Minimum limit to the integer.
+     * @param max Maximum limit to the integer.
+     * @return The option once it's validated.
+     */
     public static int readIntWithLimit(Scanner read, int min, int max) {
         boolean valid = false;
         int option = 0;
@@ -98,7 +105,7 @@ public class App {
                             System.out.println("How many positions do you want your map to have, minimum 10 and maximum 100:");
                             int mapSizeToUse = readIntWithLimit(scanner, 10, 100);
                             mapToUse = new Map(mapSizeToUse);
-                            mapToUse.generateVertexs(mapSizeToUse);
+                            mapToUse.generateEdges(mapSizeToUse);
                             System.out.println("Do you want your map to be:");
                             System.out.println("1 - Directional");
                             System.out.println("2 - Non directional");
@@ -319,7 +326,7 @@ public class App {
                     System.out.println("How many positions do you want your map to have, minimum 10 and maximum 100:");
                     int mapSize = readIntWithLimit(scanner, 10, 100);
                     mapToCreate = new Map(mapSize);
-                    mapToCreate.generateVertexs(mapSize);
+                    mapToCreate.generateEdges(mapSize);
                     System.out.println("Do you want your map to be:");
                     System.out.println("1 - Directional");
                     System.out.println("2 - Non directional");

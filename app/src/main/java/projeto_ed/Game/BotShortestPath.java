@@ -4,9 +4,17 @@ import projeto_ed.Queues.LinkedQueue;
 
 import java.util.Iterator;
 
+/**
+ * Represents a Bot using the shortestPath route in the game.
+ */
 public class BotShortestPath extends Bot implements IBot {
     private double routeWeight;
 
+    /**
+     * Constructor method for the BotShortestPath class
+     * @param botName The bot name
+     * @param team The bot team
+     */
     public BotShortestPath(String botName, Team team) {
         super(botName, team);
         routeWeight = 0;
@@ -61,6 +69,13 @@ public class BotShortestPath extends Bot implements IBot {
     }
 
 
+    /**
+     * Finds the next available vertex for the bot to move to, considering the adjacency matrix.
+     *
+     * @param map            The map on which the bot is playing.
+     * @param currentVertex  The current vertex of the bot.
+     * @return The next available vertex, or null if no such vertex is found.
+     */
     private Vertex findNextAvailableVertex(Map map, Vertex currentVertex) {
         int index = -1;
         double custo;
