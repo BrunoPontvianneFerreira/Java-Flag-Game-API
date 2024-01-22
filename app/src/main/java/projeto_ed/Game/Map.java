@@ -133,7 +133,6 @@ public class Map extends Network<Vertex> {
 
             System.out.print(contador);
 
-            // Imprime o estado do vértice (ocupado ou desocupado)
             if (vertex.isOccupied()) {
                 System.out.print("[" + vertex.getBot().getNome() + "]" + "\t\t");
             } else if(vertex.isHasFlag1()) {
@@ -144,7 +143,6 @@ public class Map extends Network<Vertex> {
                 System.out.print("[  ]" + "\t\t");
             }
 
-            // Adiciona uma quebra de linha após o número especificado de vértices por linha
             if (contador % verticesPorLinha == 0) {
                 System.out.println();
             }
@@ -214,7 +212,7 @@ public class Map extends Network<Vertex> {
     /**
      *
      */
-    public void generateVertexs(int mapSize){
+    public void generateEdges(int mapSize){
         for(int i = 1; i <= mapSize; i++){
             Vertex vertex = new Vertex();
             vertex.setIndex(i);

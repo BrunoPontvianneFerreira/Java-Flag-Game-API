@@ -98,7 +98,7 @@ public class App {
                             System.out.println("How many positions do you want your map to have, minimum 10 and maximum 100:");
                             int mapSizeToUse = readIntWithLimit(scanner, 10, 100);
                             mapToUse = new Map(mapSizeToUse);
-                            mapToUse.generateVertexs(mapSizeToUse);
+                            mapToUse.generateEdges(mapSizeToUse);
                             System.out.println("Do you want your map to be:");
                             System.out.println("1 - Directional");
                             System.out.println("2 - Non directional");
@@ -303,7 +303,7 @@ public class App {
                     }
 
 
-                    System.out.println("====Congratulations!====");
+                    System.out.println("\n====Congratulations!====");
                     if (flag1.isOccupied()) {
                         System.out.println("Player 2 won the match");
                     } else {
@@ -319,7 +319,7 @@ public class App {
                     System.out.println("How many positions do you want your map to have, minimum 10 and maximum 100:");
                     int mapSize = readIntWithLimit(scanner, 10, 100);
                     mapToCreate = new Map(mapSize);
-                    mapToCreate.generateVertexs(mapSize);
+                    mapToCreate.generateEdges(mapSize);
                     System.out.println("Do you want your map to be:");
                     System.out.println("1 - Directional");
                     System.out.println("2 - Non directional");
