@@ -122,7 +122,7 @@ public class Map extends Network<Vertex> {
     }
 
     public void printMap() {
-        System.out.println("MAPA:");
+        System.out.println("MAP:");
 
         int verticesPorLinha = 5;
         int contador = 1;
@@ -154,13 +154,13 @@ public class Map extends Network<Vertex> {
     }
 
     public void printEdges() {
-        System.out.println("ARESTAS:");
+        System.out.println("EDGES:");
 
         for (int i = 0; i < numVertices; i++) {
             for (int j = 0; j < numVertices; j++) {
                 double peso = adjMatrix[i][j];
                 if (peso > 0) {
-                    System.out.println("Aresta " + (i + 1) + " - " + (j + 1) + ", Peso: " + peso);
+                    System.out.println("Edge " + (i + 1) + " - " + (j + 1) + ", Weight: " + peso);
                 }
             }
         }

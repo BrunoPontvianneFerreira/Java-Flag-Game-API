@@ -9,6 +9,7 @@ import projeto_ed.Game.Vertex;
 public class MapImporter implements Importer{
 
 
+    @Override
     public Map loadMapFromFile(String fileName) {
 
         Map map = null;

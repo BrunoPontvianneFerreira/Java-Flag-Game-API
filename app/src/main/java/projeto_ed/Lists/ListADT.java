@@ -78,6 +78,5 @@ import java.util.Iterator;
      *
      * @return a string representation of this list
      */
-    @Override
     String toString();
 }

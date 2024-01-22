@@ -124,6 +124,7 @@ public class CircularArrayQueue<T> implements QueueADT<T> {
      *
      * @return a string representation of the circular array queue
      */
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         int index = front;

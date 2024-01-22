@@ -12,11 +12,20 @@ public abstract class Bot {
     private int verticeIndex;
 
     private int lastVerticeIndex;
+    private static int counter;
 
     public Bot( String botName, Team team){
         this.nome = botName;
         this.team = team;
         rota = null;
+    }
+
+    public static int getCounter() {
+        return counter;
+    }
+
+    public static void setCounter(int counter) {
+        Bot.counter = counter;
     }
 
 

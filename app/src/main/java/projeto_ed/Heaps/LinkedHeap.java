@@ -27,6 +27,7 @@ public class LinkedHeap<T> extends LinkedBinaryTree<T>
      *
      * @param obj the element to be added to this head
      */
+    @Override
     public void addElement(T obj) {
         HeapNode<T> node = new HeapNode<T>(obj);
         if (root == null)
@@ -96,6 +97,7 @@ public class LinkedHeap<T> extends LinkedBinaryTree<T>
      * @throws EmptyCollectionException if an empty collection
      *                                  exception occurs
      */
+    @Override
     public T removeMin() throws EmptyCollectionException {
         if (isEmpty())
             throw new EmptyCollectionException("Empty Heap");
