@@ -34,9 +34,10 @@ test {
 }
 
 jacoco {
-    toolVersion = "0.8.8"
+    toolVersion = "0.8.11"
     reportsDirectory = layout.buildDirectory.dir('customJacocoReportDir')
 }
+
 jacocoTestReport {
     reports {
         xml.required = false
@@ -45,7 +46,8 @@ jacocoTestReport {
     }
 }
 
-// Apply a specific Java toolchain to ease working on different environments.
+
+
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
@@ -66,3 +68,9 @@ tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
+
+tasks.withType(Javadoc) {
+    options.addStringOption('Xdoclint:none', '-quiet')
+}
+
+build.finalizedBy javadoc
