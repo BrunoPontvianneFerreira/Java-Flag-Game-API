@@ -3,24 +3,24 @@ package projeto_ed.MapsManagement;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import projeto_ed.Game.Mapa;
-import projeto_ed.Game.Vertice;
+import projeto_ed.Game.Map;
+import projeto_ed.Game.Vertex;
 
 public class MapImporter implements Importer{
 
 
-    public Mapa loadMapFromFile(String fileName) {
+    public Map loadMapFromFile(String fileName) {
 
-        Mapa map = null;
+        Map map = null;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line = reader.readLine();
 
             if (line != null) {
                 int size = Integer.parseInt(line.trim());
-                map = new Mapa(size);
+                map = new Map(size);
                 for(int i = 0; i < size; i++){
-                    map.addVertex(new Vertice());
+                    map.addVertex(new Vertex());
                 }
 
                 while ((line = reader.readLine()) != null) {

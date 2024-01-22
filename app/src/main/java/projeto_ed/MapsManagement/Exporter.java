@@ -1,6 +1,6 @@
 package projeto_ed.MapsManagement;
 
-import projeto_ed.Game.Mapa;
+import projeto_ed.Game.Map;
 
 public interface Exporter {
 
@@ -10,5 +10,5 @@ public interface Exporter {
      * @param map The Mapa object representing the map to be saved.
      * @param fileName A path specifying the name and location of the file.
      */
-    public void saveMapToFile(Mapa map, String fileName);
+    public void saveMapToFile(Map map, String fileName);
 }

@@ -4,11 +4,9 @@
 package projeto_ed;
 
 import projeto_ed.Game.*;
-import projeto_ed.Graphs.*;
 import projeto_ed.MapsManagement.*;
 
 import java.util.InputMismatchException;
-import java.util.Iterator;
 import java.util.Scanner;
 
 public class App {
@@ -37,10 +35,10 @@ public class App {
         Scanner scanner = new Scanner(System.in);
         MapExporter exporter = new MapExporter();
         MapImporter importer = new MapImporter();
-        Mapa mapa = new Mapa(15);
+        Map map = new Map(15);
         for (int i = 1; i <= 15; i++) {
-            Vertice vertice = new Vertice();
-            mapa.addVertex(vertice);
+            Vertex vertex = new Vertex();
+            map.addVertex(vertex);
         }
         int escolha;
 
@@ -50,8 +48,8 @@ public class App {
             System.out.println("2 - Map Creator menu");
             System.out.println("3 - Exit");
             escolha = readIntWithLimit(scanner, 1, 3);
-            Mapa mapToUse;
-            Mapa mapToCreate;
+            Map mapToUse;
+            Map mapToCreate;
             switch (escolha) {
                 case 1:
                     System.out.println("====Let´s begin====");
@@ -68,7 +66,7 @@ public class App {
                            case 2:
                                System.out.println("How many positions do you want your map to have, minimum 10 and maximum 100:");
                                int mapSizeToUse = readIntWithLimit(scanner,10,100);
-                               mapToUse = new Mapa(mapSizeToUse);
+                               mapToUse = new Map(mapSizeToUse);
                                mapToUse.generateVertexs(mapSizeToUse);
                                System.out.println("Do you want your map to be:");
                                System.out.println("1 - Directional");
@@ -79,20 +77,37 @@ public class App {
                                    case 1:
                                        System.out.println("Introduce the coverage you want to have on this map, you need a minimum of 30% coverage in this case:");
                                        coverageToUse = readIntWithLimit(scanner,30,100);
-                                       mapToUse.gerarGrafoCompletoAleatorioDirecionado(coverageToUse);
+                                       mapToUse.generateRandomCompleteDirectionalGraph(coverageToUse);
                                        break;
                                    case 2:
                                        System.out.println("Introduce the coverage you want to have on this map, you need a minimum of 20% coverage in this case:");
                                        coverageToUse = readIntWithLimit(scanner,20,100);
-                                       mapToUse.gerarGrafoCompletoAleatorioNaoDirecionado(coverageToUse);
+                                       mapToUse.generateRandomCompleteNonDirectionalGraph(coverageToUse);
                                        break;
                                }
                                System.out.println("This is the map you generated:");
-                               mapToUse.printMapa();
+                               mapToUse.printMap();
                                System.out.println();
                                System.out.println("This are the map edges:");
-                               mapToUse.printArestas();
+                               mapToUse.printEdges();
                                System.out.println();
+                               System.out.println("Do you want to save this map?");
+                               System.out.println("1 - Save");
+                               System.out.println("2 - Dont save");
+                               int answerToUseSave = readIntWithLimit(scanner,1,2);
+                               switch (answerToUseSave) {
+                                   case 1:
+                                   System.out.println("What do you want to call your map?");
+                                   String nameToUse = scanner.nextLine();
+                                   System.out.println("Introduce the path where you wish to store the map, introduce just the folder with no \\ in front of it:");
+                                   String pathToUse = scanner.nextLine();
+                                   String fullPathToSave = pathToUse + "\\" + nameToUse + ".txt";
+                                   exporter.saveMapToFile(mapToUse, fullPathToSave);
+                                   break;
+                                   case 2:
+                                       System.out.println("The map wasnt saved to a file but you will be able to play this match with it.");
+                                       break;
+                               }
                                break;
                        }
 
@@ -106,7 +121,7 @@ public class App {
                     System.out.println("Let´s create the perfect map");
                     System.out.println("How many positions do you want your map to have, minimum 10 and maximum 100:");
                     int mapSize = readIntWithLimit(scanner,10,100);
-                    mapToCreate = new Mapa(mapSize);
+                    mapToCreate = new Map(mapSize);
                     mapToCreate.generateVertexs(mapSize);
                     System.out.println("Do you want your map to be:");
                     System.out.println("1 - Directional");
@@ -117,19 +132,19 @@ public class App {
                         case 1:
                             System.out.println("Introduce the coverage you want to have on this map, you need a minimum of 30% coverage in this case:");
                             coverage = readIntWithLimit(scanner,30,100);
-                            mapToCreate.gerarGrafoCompletoAleatorioDirecionado(coverage);
+                            mapToCreate.generateRandomCompleteDirectionalGraph(coverage);
                             break;
                         case 2:
                             System.out.println("Introduce the coverage you want to have on this map, you need a minimum of 20% coverage in this case:");
                             coverage = readIntWithLimit(scanner,20,100);
-                            mapToCreate.gerarGrafoCompletoAleatorioNaoDirecionado(coverage);
+                            mapToCreate.generateRandomCompleteNonDirectionalGraph(coverage);
                             break;
                     }
                     System.out.println("This is the map you generated:");
-                    mapToCreate.printMapa();
+                    mapToCreate.printMap();
                     System.out.println();
                     System.out.println("These are the map edges:");
-                    mapToCreate.printArestas();
+                    mapToCreate.printEdges();
                     System.out.println();
                     System.out.println("Do you wish to store this map?");
                     System.out.println("1 - Yes");

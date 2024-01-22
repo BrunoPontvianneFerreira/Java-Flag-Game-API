@@ -1,6 +1,6 @@
 package projeto_ed.Game;
 
-public enum Equipa {
+public enum Team {
     EQUIPA1,
     EQUIPA2;
 }

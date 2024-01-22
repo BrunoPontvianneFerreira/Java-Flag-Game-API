@@ -12,16 +12,16 @@ import java.util.Random;
  * The Mapa class represents a map with vertices and adjacency matrix.
  * It allows creating a map with a specified number of vertices.
  */
-public class Mapa extends Network<Vertice> {
+public class Map extends Network<Vertex> {
 
     /**
      * Constructs a Mapa with the specified number of vertices.
      *
      * @param num The number of vertices in the map.
      */
-    public Mapa(int num){
+    public Map(int num){
         this.adjMatrix = new double[num][num];
-        this.vertices =  new Vertice[num];
+        this.vertices =  new Vertex[num];
         this.numVertices = 0;
     }
 
@@ -32,20 +32,12 @@ public class Mapa extends Network<Vertice> {
      * @return The Vertice object at the specified position.
      * @throws IllegalArgumentException If the specified position is invalid.
      */
-    public Vertice getVertice(int position) {
+    public Vertex getVertice(int position) {
         if (position >= 1 && position <= numVertices) {
             return vertices[position - 1];
         } else {
             throw new IllegalArgumentException("Invalid position: " + position);
         }
-    }
-
-    /**
-     * G
-     * @return
-     */
-    public Vertice[] getVertices() {
-        return vertices;
     }
 
     /**
@@ -63,7 +55,7 @@ public class Mapa extends Network<Vertice> {
      *
      * @param taxaCobertura The coverage rate indicating the likelihood of creating an edge between vertices (0 to 100).
      */
-    public void gerarGrafoCompletoAleatorioDirecionado(int taxaCobertura) {
+    public void generateRandomCompleteDirectionalGraph(int taxaCobertura) {
         Random random = new Random();
         int maxArestas = numVertices * (numVertices - 1);
         int numArestas = 0;
@@ -74,7 +66,7 @@ public class Mapa extends Network<Vertice> {
             for (int verticeOrigem = 0; verticeOrigem < numVertices; verticeOrigem++) {
                 for (int verticeDestino = 0; verticeDestino < numVertices; verticeDestino++) {
                     if (verticeOrigem != verticeDestino && numArestas < maxArestas && random.nextInt(100) < taxaCobertura) {
-                        int distance = gerarDistanciaAleatoria();
+                        int distance = generateRandomDistance();
                         adjMatrix[verticeOrigem][verticeDestino] = distance;
                         numArestas++;
                     }
@@ -90,7 +82,7 @@ public class Mapa extends Network<Vertice> {
      *
      * @param taxaCobertura The coverage rate indicating the likelihood of creating an edge between vertices (0 to 100).
      */
-    public void gerarGrafoCompletoAleatorioNaoDirecionado(int taxaCobertura) {
+    public void generateRandomCompleteNonDirectionalGraph(int taxaCobertura) {
         Random random = new Random();
 
         do {
@@ -102,7 +94,7 @@ public class Mapa extends Network<Vertice> {
             for (int verticeOrigem = 0; verticeOrigem < numVertices - 1; verticeOrigem++) {
                 for (int verticeDestino = verticeOrigem + 1; verticeDestino < numVertices; verticeDestino++) {
                     if (numArestas < maxArestas && random.nextInt(100) < taxaCobertura) {
-                        int distance = gerarDistanciaAleatoria();
+                        int distance = generateRandomDistance();
                         adjMatrix[verticeOrigem][verticeDestino] = distance;
                         adjMatrix[verticeDestino][verticeOrigem] = distance;
                         numArestas++;
@@ -124,29 +116,29 @@ public class Mapa extends Network<Vertice> {
         }
     }
 
-    private int gerarDistanciaAleatoria() {
+    private int generateRandomDistance() {
         Random random = new Random();
         return (int)(1 + random.nextDouble() * 14);
     }
 
-    public void printMapa() {
+    public void printMap() {
         System.out.println("MAPA:");
 
         int verticesPorLinha = 5;
         int contador = 1;
 
         for (int i = 0; i < numVertices; i++) {
-            Vertice vertice = vertices[i];
+            Vertex vertex = vertices[i];
 
 
             System.out.print(contador);
 
             // Imprime o estado do vértice (ocupado ou desocupado)
-            if (vertice.isOcuped()) {
-                System.out.print("[" + vertice.getBot().getNome() + "]" + "\t\t");
-            } else if(vertice.isHasFlag1()) {
+            if (vertex.isOccupied()) {
+                System.out.print("[" + vertex.getBot().getNome() + "]" + "\t\t");
+            } else if(vertex.isHasFlag1()) {
                 System.out.print("[F1]" + "\t\t");
-            }else if(vertice.isHasFlag2()) {
+            }else if(vertex.isHasFlag2()) {
                 System.out.print("[F2]" + "\t\t");
             }else{
                 System.out.print("[  ]" + "\t\t");
@@ -161,7 +153,7 @@ public class Mapa extends Network<Vertice> {
         }
     }
 
-    public void printArestas() {
+    public void printEdges() {
         System.out.println("ARESTAS:");
 
         for (int i = 0; i < numVertices; i++) {
@@ -174,7 +166,7 @@ public class Mapa extends Network<Vertice> {
         }
     }
 
-    public Iterator<Vertice> weightedShortestPathIterator(Vertice startVertex, Vertice targetVertex) {
+    public Iterator<Vertex> weightedShortestPathIterator(Vertex startVertex, Vertex targetVertex) {
         int startIndex = getIndex(startVertex);
         int targetIndex = getIndex(targetVertex);
 
@@ -183,7 +175,7 @@ public class Mapa extends Network<Vertice> {
         }
 
         LinkedQueue<Integer> traversalQueue = new LinkedQueue<>();
-        DoublyUnorderedLinkedList<Vertice> resultList = new DoublyUnorderedLinkedList<>();
+        DoublyUnorderedLinkedList<Vertex> resultList = new DoublyUnorderedLinkedList<>();
         boolean[] visited = new boolean[numVertices];
         int[] previousVertices = new int[numVertices];
 
@@ -224,13 +216,14 @@ public class Mapa extends Network<Vertice> {
      */
     public void generateVertexs(int mapSize){
         for(int i = 1; i <= mapSize; i++){
-            Vertice vertice = new Vertice();
-            this.addVertex(vertice);
+            Vertex vertex = new Vertex();
+            vertex.setIndex(i);
+            this.addVertex(vertex);
         }
     }
 
 
-    public Iterator<Vertice> treeIterator(Vertice startVertex, Vertice targetVertex) {
+    public Iterator<Vertex> treeIterator(Vertex startVertex, Vertex targetVertex) {
         int startIndex = getIndex(startVertex);
         int targetIndex = getIndex(targetVertex);
 
@@ -271,7 +264,7 @@ public class Mapa extends Network<Vertice> {
             }
         }
 
-        DoublyUnorderedLinkedList<Vertice> resultList = new DoublyUnorderedLinkedList<>();
+        DoublyUnorderedLinkedList<Vertex> resultList = new DoublyUnorderedLinkedList<>();
         int currentVertex = targetIndex;
 
         while (currentVertex != -1) {
@@ -300,11 +293,11 @@ public class Mapa extends Network<Vertice> {
     }
 
     public void printNeighbors(Bot bot){
-        System.out.println("The bot is at the vertex: " + bot.getVertice_index());
+        System.out.println("The bot is at the vertex: " + bot.getVerticeIndex());
         System.out.println("Options:");
         for(int i = 0; i < this.size(); i++){
-        if(adjMatrix[bot.getVertice_index() - 1][i] > 0 && (i != bot.getLast_vertice_index()-1)){
-            System.out.println(i+1 + ", cost: " + (int)adjMatrix[bot.getVertice_index()-1][i]);
+        if(adjMatrix[bot.getVerticeIndex() - 1][i] > 0 && (i != bot.getLastVerticeIndex()-1)){
+            System.out.println(i+1 + ", cost: " + (int)adjMatrix[bot.getVerticeIndex()-1][i]);
             }
         }
     }

@@ -2,22 +2,20 @@ package projeto_ed.Game;
 
 import projeto_ed.Queues.LinkedQueue;
 
-import java.util.Iterator;
-
 public abstract class Bot {
-    Equipa equipa;
+    Team team;
     private String nome;
-    private LinkedQueue<Vertice> rota;
+    private LinkedQueue<Vertex> rota;
 
-    private int flag_index;
+    private int flagIndex;
 
-    private int vertice_index;
+    private int verticeIndex;
 
-    private int last_vertice_index;
+    private int lastVerticeIndex;
 
-    public Bot( String botName, Equipa equipa){
+    public Bot( String botName, Team team){
         this.nome = botName;
-        this.equipa = equipa;
+        this.team = team;
         rota = null;
     }
 
@@ -30,43 +28,43 @@ public abstract class Bot {
         this.nome = nome;
     }
 
-    public Equipa getEquipa(){
-        return this.equipa;
+    public Team getEquipa(){
+        return this.team;
     }
 
-    public void setEquipa(Equipa team){
-        this.equipa = team;
+    public void setEquipa(Team team){
+        this.team = team;
     }
 
-    public int getFlag_index() {
-        return flag_index;
+    public int getFlagIndex() {
+        return flagIndex;
     }
 
-    public void setFlag_index(int flag_index) {
-        this.flag_index = flag_index;
+    public void setFlagIndex(int flagIndex) {
+        this.flagIndex = flagIndex;
     }
 
-    public int getVertice_index() {
-        return vertice_index;
+    public int getVerticeIndex() {
+        return verticeIndex;
     }
 
-    public void setVertice_index(int vertice_index) {
-        this.vertice_index = vertice_index;
+    public void setVerticeIndex(int verticeIndex) {
+        this.verticeIndex = verticeIndex;
     }
 
-    public LinkedQueue<Vertice> getRota() {
+    public LinkedQueue<Vertex> getRota() {
         return rota;
     }
 
-    public void setRota(LinkedQueue<Vertice> rota) {
+    public void setRota(LinkedQueue<Vertex> rota) {
         this.rota = rota;
     }
 
-    public int getLast_vertice_index() {
-        return last_vertice_index;
+    public int getLastVerticeIndex() {
+        return lastVerticeIndex;
     }
 
-    public void setLast_vertice_index(int last_vertice_index) {
-        this.last_vertice_index = last_vertice_index;
+    public void setLastVerticeIndex(int lastVerticeIndex) {
+        this.lastVerticeIndex = lastVerticeIndex;
     }
 }

@@ -1,6 +1,6 @@
 package projeto_ed.MapsManagement;
 
-import projeto_ed.Game.Mapa;
+import projeto_ed.Game.Map;
 
 public interface Importer {
 
@@ -10,5 +10,5 @@ public interface Importer {
      * @param fileName The name of the file containing map details.
      * @return A new Mapa instance based on the information in the file.
      */
-    public Mapa loadMapFromFile(String fileName);
+    public Map loadMapFromFile(String fileName);
 }

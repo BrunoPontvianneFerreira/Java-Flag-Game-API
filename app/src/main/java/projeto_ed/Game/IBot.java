@@ -1,6 +1,6 @@
 package projeto_ed.Game;
 
 public interface IBot {
-    public void createRout(Mapa map,Vertice startVertex, Vertice flag);
-    public void play(Mapa map);
+    public void createRout(Map map, Vertex startVertex, Vertex flag);
+    public void play(Map map);
 }

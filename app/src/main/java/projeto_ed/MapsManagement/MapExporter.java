@@ -1,6 +1,6 @@
 package projeto_ed.MapsManagement;
 
-import projeto_ed.Game.Mapa;
+import projeto_ed.Game.Map;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class MapExporter implements Exporter{
 
-    public void saveMapToFile(Mapa map, String fileName) {
+    public void saveMapToFile(Map map, String fileName) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
 
             if(!map.isEmpty()) {
