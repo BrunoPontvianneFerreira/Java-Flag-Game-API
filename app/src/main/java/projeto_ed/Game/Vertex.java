@@ -1,11 +1,15 @@
 package projeto_ed.Game;
 
-public class Vertice {
+public class Vertex {
+
+    private int index;
     private Bot bot;
+
     private boolean hasFlag1;
+
     private boolean hasFlag2;
 
-    public Vertice() {
+    public Vertex() {
         bot = null;
     }
 
@@ -19,6 +23,14 @@ public class Vertice {
 
     public void setBot(Bot bot) {
         this.bot = bot;
+    }
+
+    public int getindex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     public boolean isHasFlag1() {

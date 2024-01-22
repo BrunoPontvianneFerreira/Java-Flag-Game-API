@@ -1,10 +1,24 @@
 package projeto_ed.Game;
 
-import java.util.Iterator;
+import projeto_ed.Queues.LinkedQueue;
 
-public class Bot<T> {
+public abstract class Bot {
+    Team team;
     private String nome;
-    private Iterator<T> iterador;
+    private LinkedQueue<Vertex> rota;
+
+    private int flagIndex;
+
+    private int verticeIndex;
+
+    private int lastVerticeIndex;
+
+    public Bot( String botName, Team team){
+        this.nome = botName;
+        this.team = team;
+        rota = null;
+    }
+
 
     public String getNome() {
         return nome;
@@ -14,11 +28,43 @@ public class Bot<T> {
         this.nome = nome;
     }
 
-    public Iterator<T> getIterador() {
-        return iterador;
+    public Team getEquipa(){
+        return this.team;
     }
 
-    public void setIterador(Iterator<T> iterador) {
-        this.iterador = iterador;
+    public void setEquipa(Team team){
+        this.team = team;
+    }
+
+    public int getFlagIndex() {
+        return flagIndex;
+    }
+
+    public void setFlagIndex(int flagIndex) {
+        this.flagIndex = flagIndex;
+    }
+
+    public int getVerticeIndex() {
+        return verticeIndex;
+    }
+
+    public void setVerticeIndex(int verticeIndex) {
+        this.verticeIndex = verticeIndex;
+    }
+
+    public LinkedQueue<Vertex> getRota() {
+        return rota;
+    }
+
+    public void setRota(LinkedQueue<Vertex> rota) {
+        this.rota = rota;
+    }
+
+    public int getLastVerticeIndex() {
+        return lastVerticeIndex;
+    }
+
+    public void setLastVerticeIndex(int lastVerticeIndex) {
+        this.lastVerticeIndex = lastVerticeIndex;
     }
 }

@@ -82,4 +82,13 @@ public class PriorityQueueNode<T> implements
             result = -1;
         return result;
     }
+
+    /**
+     * Sets the priority of the object.
+     *
+     * @param priority The priority to be set.
+     */
+    protected void setPriority(int priority) {
+        this.priority = priority;
+    }
 }

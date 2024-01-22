@@ -11,7 +11,7 @@ import projeto_ed.Queues.CircularArrayQueue;
  * @param <T> the type of elements stored in the tree
  */
 public class ArrayBinaryTree<T> implements BinaryTreeADT<T> {
-    private final int CAPACITY = 50;
+    private final int CAPACITY = 200;
     protected int count;
     protected T[] tree;
 
@@ -21,6 +21,17 @@ public class ArrayBinaryTree<T> implements BinaryTreeADT<T> {
     public ArrayBinaryTree() {
         count = 0;
         tree = (T[]) new Object[CAPACITY];
+    }
+
+    /**
+     * Constructs an empty ArrayBinaryTree with the specified initial capacity.
+     * The capacity represents the maximum number of elements the tree can hold.
+     *
+     * @param num The initial capacity of the ArrayBinaryTree.
+     */
+    public ArrayBinaryTree(int num) {
+        count = 0;
+        tree = (T[]) new Object[num];
     }
 
     /**
