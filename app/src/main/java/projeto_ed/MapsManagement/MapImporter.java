@@ -19,8 +19,10 @@ public class MapImporter implements Importer{
             if (line != null) {
                 int size = Integer.parseInt(line.trim());
                 map = new Map(size);
-                for(int i = 0; i < size; i++){
-                    map.addVertex(new Vertex());
+                for(int i = 1; i <= size; i++){
+                    Vertex vertex = new Vertex();
+                    vertex.setIndex(i);
+                    map.addVertex(vertex);
                 }
 
                 while ((line = reader.readLine()) != null) {

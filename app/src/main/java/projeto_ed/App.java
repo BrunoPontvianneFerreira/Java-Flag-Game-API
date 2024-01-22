@@ -6,7 +6,6 @@ package projeto_ed;
 import projeto_ed.Game.*;
 import projeto_ed.Lists.DoublyUnorderedLinkedList;
 import projeto_ed.MapsManagement.*;
-import projeto_ed.Queues.LinkedQueue;
 
 import java.util.InputMismatchException;
 import java.util.Random;
@@ -149,7 +148,13 @@ public class App {
                     int choose1 = readIntWithLimit(scanner, 1, mapToUse.size());
                     System.out.println("Player 2: Choose the position of your flag");
                     mapToUse.printMap();
-                    int choose2 = readIntWithLimit(scanner, 1, mapToUse.size());
+                    int choose2;
+                    do {
+                       choose2 = readIntWithLimit(scanner, 1, mapToUse.size());
+                        if (choose2 == choose1) {
+                            System.out.println("You cannot choose this position because flag 1 is there");
+                        }
+                    } while (choose1 == choose2);
                     Vertex flag1 = mapToUse.getVertice(choose1);
                     flag1.setHasFlag1(true);
                     Vertex flag2 = mapToUse.getVertice(choose2);
@@ -266,12 +271,12 @@ public class App {
                         System.out.println("Playing: " + bot.getNome() + " " + bot.getEquipa());
                         mapToUse.printNeighbors(bot);
 
-                        if(bot instanceof BotTree){
-                            ((BotTree) bot).play(mapToUse);
-                        }else if(bot instanceof BotShortestEdge){
-                            ((BotShortestEdge) bot).play(mapToUse);
-                        }else if(bot instanceof BotShortestPath){
-                            ((BotShortestPath) bot).play(mapToUse);
+                        switch (bot) {
+                            case BotTree botTree -> botTree.play(mapToUse);
+                            case BotShortestEdge botShortestEdge -> botShortestEdge.play(mapToUse);
+                            case BotShortestPath botShortestPath -> botShortestPath.play(mapToUse);
+                            case null, default -> {
+                            }
                         }
 
                         mapToUse.printMap();
@@ -299,9 +304,9 @@ public class App {
 
 
                     System.out.println("====Congratulations!====");
-                    if(flag1.isOccupied()){
+                    if (flag1.isOccupied()) {
                         System.out.println("Player 2 won the match");
-                    }else{
+                    } else {
                         System.out.println("Player 1 won the match");
                     }
                     break;
