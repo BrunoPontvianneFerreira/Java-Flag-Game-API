@@ -36,6 +36,7 @@ public class BotShortestEdge extends Bot implements IBot{
                 vertex.setBot(this);
                 getRota().dequeue();
                 this.setVerticeIndex(vertex.getindex());
+                setCounter(0);
             } else {
                 Vertex currentVertex = map.getVertice(this.getVerticeIndex());
                 Vertex nextVertex = findNextAvailableVertex(map, currentVertex);
@@ -46,7 +47,9 @@ public class BotShortestEdge extends Bot implements IBot{
                     map.getVertice(this.getVerticeIndex()).setBot(null);
                     nextVertex.setBot(this);
                     this.setVerticeIndex(nextVertex.getindex());
+                    setCounter(0);
                 }
+                setCounter(getCounter() + 1);
             }
         }else{
             createRout(map, map.getVertice(this.getVerticeIndex()), map.getVertice(this.getFlagIndex()));

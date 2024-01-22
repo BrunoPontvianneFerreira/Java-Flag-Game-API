@@ -20,6 +20,7 @@ public class ArrayHeap<T> extends ArrayBinaryTree<T> implements HeapADT<T> {
      *
      * @param obj the element to be added to this heap
      */
+    @Override
     public void addElement(T obj) {
         if (count == tree.length)
             expandCapacity();
@@ -56,6 +57,7 @@ public class ArrayHeap<T> extends ArrayBinaryTree<T> implements HeapADT<T> {
      * @throws EmptyCollectionException if an empty collection
      *                                  exception occurs
      */
+    @Override
     public T removeMin() throws EmptyCollectionException {
         if (isEmpty())
             throw new EmptyCollectionException("Empty Heap");

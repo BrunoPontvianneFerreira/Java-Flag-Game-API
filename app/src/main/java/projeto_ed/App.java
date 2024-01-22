@@ -294,7 +294,7 @@ public class App {
                         }
 
 
-                    } while (!bot.getRota().isEmpty());
+                    } while (!bot.getRota().isEmpty() || Bot.getCounter() == listBots.size());
 
                     try {
                         Thread.sleep(3000);

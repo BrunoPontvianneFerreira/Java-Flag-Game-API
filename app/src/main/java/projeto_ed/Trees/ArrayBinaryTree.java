@@ -115,6 +115,7 @@ public class ArrayBinaryTree<T> implements BinaryTreeADT<T> {
      * @throws ElementNotFoundException if an element not found
      *                                  exception occurs
      */
+    @Override
     public T find(T targetElement) throws ElementNotFoundException {
         T temp = null;
         boolean found = false;
