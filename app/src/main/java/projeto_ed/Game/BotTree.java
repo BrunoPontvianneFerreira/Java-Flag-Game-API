@@ -52,13 +52,14 @@ public class BotTree extends Bot implements IBot {
 
                 if (nextVertex != null) {
                     this.setLastVerticeIndex(this.getVerticeIndex());
-                    createRout(map, nextVertex, map.getVertice(this.getFlagIndex()));
                     map.getVertice(this.getVerticeIndex()).setBot(null);
+                    createRout(map, nextVertex, map.getVertice(this.getFlagIndex()));
                     nextVertex.setBot(this);
                     this.setVerticeIndex(nextVertex.getindex());
                     setCounter(0);
+                }else {
+                    setCounter(getCounter() + 1);
                 }
-                setCounter(getCounter() + 1);
             }
         }else{
             createRout(map, map.getVertice(this.getVerticeIndex()), map.getVertice(this.getFlagIndex()));

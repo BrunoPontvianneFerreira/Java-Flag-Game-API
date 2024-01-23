@@ -256,7 +256,7 @@ public class App {
                     }
 
                     System.out.println("The game is going to start!");
-                    System.out.println("Remember that bots start at the vertix of the flag");
+                    System.out.println("Remember that bots start at the vertex of the flag");
                     Random random = new Random();
                     int randomNumber = random.nextInt(2) + 1;
                     if (randomNumber == 1) {
@@ -302,7 +302,7 @@ public class App {
                     } while (!bot.getRota().isEmpty() && Bot.getCounter() != listBots.size());
 
                     try {
-                        Thread.sleep(3000);
+                        Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
