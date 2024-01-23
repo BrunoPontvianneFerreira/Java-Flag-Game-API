@@ -15,7 +15,7 @@ public class MapTest {
     @BeforeEach
     public void setUp() {
         map = new Map(5);
-        map.generateEdges(5);
+        map.generateVertexes(5);
     }
 
     @Test
@@ -70,7 +70,7 @@ public class MapTest {
     void test_GenerateEdges() {
         int mapSize = 5;
         Map mapa = new Map(mapSize);
-        mapa.generateEdges(mapSize);
+        mapa.generateVertexes(mapSize);
  assertEquals(mapSize, map.size(), "The number of vertices in the map should be equal to the specified map size");
     }
 

@@ -12,7 +12,7 @@ public class BotTreeTest {
     @BeforeEach
     void setUp() {
         map = new Map(5);
-        map.generateEdges(5);
+        map.generateVertexes(5);
 
         map.addEdge(map.getVertice(1), map.getVertice(2), 2);
         map.addEdge(map.getVertice(1), map.getVertice(3), 3);

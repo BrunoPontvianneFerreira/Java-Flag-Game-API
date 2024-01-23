@@ -51,7 +51,7 @@ public interface IMap {
      *
      * @param mapSize The number of edges to generate.
      */
-    void generateEdges(int mapSize);
+    void generateVertexes(int mapSize);
 
     /**
      * Returns an iterator over the vertices of the minimum spanning tree using Prim's algorithm.

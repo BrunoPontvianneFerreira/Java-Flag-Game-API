@@ -208,7 +208,7 @@ public class Map extends Network<Vertex> implements IMap {
     }
 
     @Override
-    public void generateEdges(int mapSize) {
+    public void generateVertexes(int mapSize) {
         for (int i = 1; i <= mapSize; i++) {
             Vertex vertex = new Vertex();
             vertex.setIndex(i);
