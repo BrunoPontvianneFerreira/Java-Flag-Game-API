@@ -24,6 +24,7 @@ public class BotShortestEdge extends Bot implements IBot{
         LinkedQueue<Vertex> rota = new LinkedQueue<>();
         this.setFlagIndex(flag.getindex());
         this.setVerticeIndex(startVertex.getindex());
+        this.setLastVerticeIndex(startVertex.getindex());
         for (Iterator<Vertex> it = map.weightedShortestPathIterator(startVertex, flag); it.hasNext(); ) {
             Vertex vertex = it.next();
             rota.enqueue(vertex);

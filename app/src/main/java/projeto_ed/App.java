@@ -126,7 +126,7 @@ public class App {
                             System.out.println("This is the map you generated:");
                             mapToUse.printMap();
                             System.out.println();
-                            System.out.println("This are the map edges:");
+                            System.out.println("These are the map edges:");
                             mapToUse.printEdges();
                             System.out.println();
                             System.out.println("Do you want to save this map?");
@@ -168,8 +168,6 @@ public class App {
                     flag2.setHasFlag2(true);
                     System.out.println("It looked like this:");
                     mapToUse.printMap();
-                    mapToUse.removeEdge(flag1, flag2);
-                    mapToUse.removeEdge(flag2, flag1);
                     System.out.println("Now let's define the bots");
                     System.out.println("How many bots do you want?");
                     int maxBots;

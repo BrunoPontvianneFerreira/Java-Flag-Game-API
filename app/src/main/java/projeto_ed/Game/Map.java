@@ -127,7 +127,6 @@ public class Map extends Network<Vertex> implements IMap {
 
             System.out.print(contador);
 
-            // Imprime o estado do vértice (ocupado ou desocupado)
             if (vertex.isOccupied()) {
                 System.out.print("[" + vertex.getBot().getNome() + "]" + "\t\t");
             } else if (vertex.isHasFlag1()) {
@@ -138,11 +137,9 @@ public class Map extends Network<Vertex> implements IMap {
                 System.out.print("[  ]" + "\t\t");
             }
 
-            // Adiciona uma quebra de linha após o número especificado de vértices por linha
             if (contador % verticesPorLinha == 0) {
                 System.out.println();
             }
-
             contador++;
         }
     }
