@@ -2,6 +2,9 @@ package projeto_ed.MapsManagement;
 
 import projeto_ed.Game.Map;
 
+/**
+ * Interface for importing maps from text files.
+ */
 public interface Importer {
 
     /**

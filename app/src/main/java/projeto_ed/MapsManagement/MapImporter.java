@@ -6,8 +6,10 @@ import java.io.IOException;
 import projeto_ed.Game.Map;
 import projeto_ed.Game.Vertex;
 
+/**
+ * Class responsible for importing maps from text files.
+ */
 public class MapImporter implements Importer{
-
 
     @Override
     public Map loadMapFromFile(String fileName) {

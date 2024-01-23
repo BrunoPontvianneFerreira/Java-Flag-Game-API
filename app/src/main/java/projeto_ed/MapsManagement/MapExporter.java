@@ -6,8 +6,10 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * Class responsible for exporting maps to text files.
+ */
 public class MapExporter implements Exporter{
-
 
     @Override
     public void saveMapToFile(Map map, String fileName) {

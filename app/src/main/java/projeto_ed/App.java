@@ -14,6 +14,13 @@ import java.util.Scanner;
 public class App {
 
 
+    /**
+     * Controls the limits of the input.
+     * @param read Scanner that reads the input
+     * @param min Minimum limit to the integer.
+     * @param max Maximum limit to the integer.
+     * @return The option once it's validated.
+     */
     public static int readIntWithLimit(Scanner read, int min, int max) {
         boolean valid = false;
         int option = 0;
@@ -98,7 +105,7 @@ public class App {
                             System.out.println("How many positions do you want your map to have, minimum 10 and maximum 100:");
                             int mapSizeToUse = readIntWithLimit(scanner, 10, 100);
                             mapToUse = new Map(mapSizeToUse);
-                            mapToUse.generateVertexs(mapSizeToUse);
+                            mapToUse.generateVertexes(mapSizeToUse);
                             System.out.println("Do you want your map to be:");
                             System.out.println("1 - Directional");
                             System.out.println("2 - Non directional");
@@ -119,7 +126,7 @@ public class App {
                             System.out.println("This is the map you generated:");
                             mapToUse.printMap();
                             System.out.println();
-                            System.out.println("This are the map edges:");
+                            System.out.println("These are the map edges:");
                             mapToUse.printEdges();
                             System.out.println();
                             System.out.println("Do you want to save this map?");
@@ -161,8 +168,6 @@ public class App {
                     flag2.setHasFlag2(true);
                     System.out.println("It looked like this:");
                     mapToUse.printMap();
-                    mapToUse.removeEdge(flag1, flag2);
-                    mapToUse.removeEdge(flag2, flag1);
                     System.out.println("Now let's define the bots");
                     System.out.println("How many bots do you want?");
                     int maxBots;
@@ -251,7 +256,7 @@ public class App {
                     }
 
                     System.out.println("The game is going to start!");
-                    System.out.println("Remember that bots start at the vertix of the flag");
+                    System.out.println("Remember that bots start at the vertex of the flag");
                     Random random = new Random();
                     int randomNumber = random.nextInt(2) + 1;
                     if (randomNumber == 1) {
@@ -294,20 +299,22 @@ public class App {
                         }
 
 
-                    } while (!bot.getRota().isEmpty() || Bot.getCounter() == listBots.size());
+                    } while (!bot.getRota().isEmpty() && Bot.getCounter() != listBots.size());
 
                     try {
-                        Thread.sleep(3000);
+                        Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
 
 
-                    System.out.println("====Congratulations!====");
-                    if (flag1.isOccupied()) {
+                    System.out.println("\n====Result!====");
+                    if (flag1.isOccupied() && flag1.getBot().getEquipa() == Team.EQUIPA2) {
                         System.out.println("Player 2 won the match");
-                    } else {
+                    } else if(flag2.isOccupied() && flag2.getBot().getEquipa() == Team.EQUIPA1){
                         System.out.println("Player 1 won the match");
+                    }else{
+                        System.out.println("This game resulted in a draw");
                     }
                     break;
                 case 2:
@@ -319,7 +326,7 @@ public class App {
                     System.out.println("How many positions do you want your map to have, minimum 10 and maximum 100:");
                     int mapSize = readIntWithLimit(scanner, 10, 100);
                     mapToCreate = new Map(mapSize);
-                    mapToCreate.generateVertexs(mapSize);
+                    mapToCreate.generateVertexes(mapSize);
                     System.out.println("Do you want your map to be:");
                     System.out.println("1 - Directional");
                     System.out.println("2 - Non directional");

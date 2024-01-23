@@ -48,6 +48,7 @@ public class Graph<T> implements GraphADT<T> {
      * @param vertex2 the second vertex
      * @throws IllegalArgumentException if either vertex is invalid
      */
+    @Override
     public void addEdge(T vertex1, T vertex2) {
         int index1 = getIndex(vertex1);
         int index2 = getIndex(vertex2);
@@ -66,6 +67,7 @@ public class Graph<T> implements GraphADT<T> {
      * @param vertex the vertex to add to the graph
      * @throws IllegalArgumentException if the vertex already exists in the graph
      */
+    @Override
     public void addVertex(T vertex) {
 
         if (contains(vertex)) {
@@ -309,6 +311,7 @@ public class Graph<T> implements GraphADT<T> {
      *
      * @return true if the graph is connected, false otherwise
      */
+    @Override
     public boolean isConnected() {
         if (numVertices <= 1) {
             return true;
@@ -372,7 +375,7 @@ public class Graph<T> implements GraphADT<T> {
      * @throws NoSuchElementException if the vertex is not found
      */
     public int getIndex(T vertex) {
-        for (int i = 0; i < numVertices; i++) {
+        for (int i = 0; i <= numVertices; i++) {
             if (vertices[i].equals(vertex)) {
                 return i;
             }
@@ -407,9 +410,7 @@ public class Graph<T> implements GraphADT<T> {
     }
 
     /**
-     * Obtém a matriz de adjacência.
-     *
-     * @return A matriz de adjacência.
+     * @return The adjacency matrix.
      */
     public double[][] getAdjMatrix() {
         return adjMatrix;

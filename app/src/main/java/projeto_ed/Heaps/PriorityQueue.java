@@ -37,6 +37,12 @@ public class PriorityQueue<T> extends ArrayHeap<PriorityQueueNode<T>> {
         return temp.getElement();
     }
 
+    /**
+     * Changes the priority of a specified element in the priority queue.
+     *
+     * @param element      The element whose priority is to be changed.
+     * @param newPriority  The new priority to be set for the specified element.
+     */
     public void changePriority(T element, int newPriority) {
         for (Iterator<PriorityQueueNode<T>> it = super.iteratorInOrder(); it.hasNext(); ) {
             PriorityQueueNode<T> priorityQueueNode = it.next();

@@ -4,7 +4,16 @@ import projeto_ed.Queues.LinkedQueue;
 
 import java.util.Iterator;
 
+/**
+ * Represents a Bot using the Prim´s algorithm route in the game.
+ */
 public class BotTree extends Bot implements IBot {
+
+    /**
+     * Constructor method for the BotTree class
+     * @param botName The bot name
+     * @param team The bot team
+     */
     public BotTree(String botName, Team team) {
         super(botName, team);
         this.setRota(new LinkedQueue<>());
@@ -43,19 +52,27 @@ public class BotTree extends Bot implements IBot {
 
                 if (nextVertex != null) {
                     this.setLastVerticeIndex(this.getVerticeIndex());
-                    createRout(map, nextVertex, map.getVertice(this.getFlagIndex()));
                     map.getVertice(this.getVerticeIndex()).setBot(null);
+                    createRout(map, nextVertex, map.getVertice(this.getFlagIndex()));
                     nextVertex.setBot(this);
                     this.setVerticeIndex(nextVertex.getindex());
                     setCounter(0);
+                }else {
+                    setCounter(getCounter() + 1);
                 }
             }
-            setCounter(getCounter() + 1);
         }else{
             createRout(map, map.getVertice(this.getVerticeIndex()), map.getVertice(this.getFlagIndex()));
         }
     }
 
+    /**
+     * Finds the next available vertex for the bot to move to, considering the adjacency matrix.
+     *
+     * @param map            The map on which the bot is playing.
+     * @param currentVertex  The current vertex of the bot.
+     * @return The next available vertex, or null if no such vertex is found.
+     */
     private Vertex findNextAvailableVertex(Map map, Vertex currentVertex) {
         double[][] matriz = map.getAdjMatrix();
         for (int i = 0; i < map.size(); i++) {
