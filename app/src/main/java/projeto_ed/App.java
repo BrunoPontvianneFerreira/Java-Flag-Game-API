@@ -301,7 +301,7 @@ public class App {
                         }
 
 
-                    } while (!bot.getRota().isEmpty() || Bot.getCounter() == listBots.size());
+                    } while (!bot.getRota().isEmpty() && Bot.getCounter() != listBots.size());
 
                     try {
                         Thread.sleep(3000);
@@ -311,10 +311,12 @@ public class App {
 
 
                     System.out.println("\n====Congratulations!====");
-                    if (flag1.isOccupied()) {
+                    if (flag1.isOccupied() && flag1.getBot().getEquipa() == Team.EQUIPA2) {
                         System.out.println("Player 2 won the match");
-                    } else {
+                    } else if(flag2.isOccupied() && flag2.getBot().getEquipa() == Team.EQUIPA1){
                         System.out.println("Player 1 won the match");
+                    }else{
+                        System.out.println("This game resulted in a draw");
                     }
                     break;
                 case 2:

@@ -375,7 +375,7 @@ public class Graph<T> implements GraphADT<T> {
      * @throws NoSuchElementException if the vertex is not found
      */
     public int getIndex(T vertex) {
-        for (int i = 0; i < numVertices; i++) {
+        for (int i = 0; i <= numVertices; i++) {
             if (vertices[i].equals(vertex)) {
                 return i;
             }

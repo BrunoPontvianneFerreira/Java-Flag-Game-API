@@ -61,8 +61,8 @@ public class BotShortestPath extends Bot implements IBot {
                     this.setVerticeIndex(nextVertex.getindex());
                     setCounter(0);
                 }
+                setCounter(getCounter() + 1);
             }
-            setCounter(getCounter() + 1);
         }else{
             createRout(map, map.getVertice(this.getVerticeIndex()), map.getVertice(this.getFlagIndex()));
         }
