@@ -310,7 +310,7 @@ public class App {
                     }
 
 
-                    System.out.println("====Congratulations!====");
+                    System.out.println("\n====Congratulations!====");
                     if (flag1.isOccupied()) {
                         System.out.println("Player 2 won the match");
                     } else {

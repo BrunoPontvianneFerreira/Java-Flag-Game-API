@@ -397,21 +397,12 @@ public class Graph<T> implements GraphADT<T> {
      * @param vertex the vertex to check for existence in the graph
      * @return true if the graph contains the vertex, false otherwise
      */
-    public boolean contains(T vertex) {
+    protected boolean contains(T vertex) {
         for (int i = 0; i < numVertices; i++) {
             if (vertices[i] != null && vertices[i].equals(vertex)) {
                 return true;
             }
         }
         return false;
-    }
-
-    /**
-     * Obtém a matriz de adjacência.
-     *
-     * @return A matriz de adjacência.
-     */
-    public double[][] getAdjMatrix() {
-        return adjMatrix;
     }
 }
