@@ -54,15 +54,6 @@ java {
     }
 }
 
-run{
-    standardInput = System.in
-}
-
-
-application {
-    // Define the main class for the application.
-    mainClass = 'projeto_ed.App'
-}
 
 tasks.named('test') {
     // Use JUnit Platform for unit tests.
