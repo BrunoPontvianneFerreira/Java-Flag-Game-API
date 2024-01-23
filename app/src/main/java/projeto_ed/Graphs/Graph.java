@@ -408,4 +408,11 @@ public class Graph<T> implements GraphADT<T> {
         }
         return false;
     }
+
+    /**
+     * @return The adjacency matrix.
+     */
+    public double[][] getAdjMatrix() {
+        return adjMatrix;
+    }
 }
