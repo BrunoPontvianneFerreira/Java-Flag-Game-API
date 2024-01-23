@@ -308,7 +308,7 @@ public class App {
                     }
 
 
-                    System.out.println("\n====Congratulations!====");
+                    System.out.println("\n====Result!====");
                     if (flag1.isOccupied() && flag1.getBot().getEquipa() == Team.EQUIPA2) {
                         System.out.println("Player 2 won the match");
                     } else if(flag2.isOccupied() && flag2.getBot().getEquipa() == Team.EQUIPA1){
